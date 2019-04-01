@@ -1,0 +1,55 @@
+﻿Build started 5/7/2013 1:49:09 PM.
+     1>Project "C:\Users\Jonathan_Moore\Documents\Visual Studio 2010\Projects\Biology\RNA Analysis\rCAD\ManagedLabelRNA32\ManagedLabelRNA32.vcxproj" on node 3 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Debug\ManagedLabelRNA32.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /AI"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0" /Zi /clr /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDLL /D _UNICODE /D UNICODE /EHa /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yc"StdAfx.h" /Fp"Debug\ManagedLabelRNA32.pch" /Fo"Debug\\" /Fd"Debug\vc100.pdb" /TP /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Core.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Data.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Xml.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Xml.Linq.dll" /analyze- /errorReport:prompt Stdafx.cpp /clr:nostdlib 
+         Stdafx.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /AI"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0" /Zi /clr /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDLL /D _UNICODE /D UNICODE /EHa /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /TP /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Core.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Data.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Xml.dll" /FU"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Xml.Linq.dll" /analyze- /errorReport:prompt AssemblyInfo.cpp ManagedLabelRNA.cpp Random.cc RNA.cc util.cc /clr:nostdlib 
+         AssemblyInfo.cpp
+         ManagedLabelRNA.cpp
+     1>ManagedLabelRNA.cpp(93): warning C4018: '<' : signed/unsigned mismatch
+     1>ManagedLabelRNA.cpp(146): warning C4018: '<' : signed/unsigned mismatch
+     1>ManagedLabelRNA.cpp(187): warning C4018: '<' : signed/unsigned mismatch
+     1>ManagedLabelRNA.cpp(208): warning C4018: '<' : signed/unsigned mismatch
+     1>ManagedLabelRNA.cpp(226): warning C4018: '<' : signed/unsigned mismatch
+     1>ManagedLabelRNA.cpp(229): warning C4018: '<' : signed/unsigned mismatch
+     1>ManagedLabelRNA.cpp(238): warning C4018: '<' : signed/unsigned mismatch
+     1>ManagedLabelRNA.cpp(241): warning C4018: '<' : signed/unsigned mismatch
+         Random.cc
+     1>Random.cc(16): warning C4244: 'argument' : conversion from 'time_t' to 'unsigned long', possible loss of data
+     1>Random.cc(134): warning C4307: '*' : integral constant overflow
+     1>Random.cc(136): warning C4307: '*' : integral constant overflow
+         RNA.cc
+     1>c:\users\jonathan_moore\documents\visual studio 2010\projects\biology\rna analysis\rcad\managedlabelrna32\util.h(22): warning C4290: C++ exception specification ignored except to indicate a function is not __declspec(nothrow)
+     1>RNA.cc(134): warning C4018: '>=' : signed/unsigned mismatch
+     1>RNA.cc(158): warning C4018: '<=' : signed/unsigned mismatch
+     1>RNA.cc(407): warning C4018: '<' : signed/unsigned mismatch
+         util.cc
+     1>c:\users\jonathan_moore\documents\visual studio 2010\projects\biology\rna analysis\rcad\managedlabelrna32\util.h(22): warning C4290: C++ exception specification ignored except to indicate a function is not __declspec(nothrow)
+     1>util.cc(54): warning C4290: C++ exception specification ignored except to indicate a function is not __declspec(nothrow)
+         Generating Code...
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /clr /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDLL /D _UNICODE /D UNICODE /EHa /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /TP /analyze- /errorReport:prompt "C:\Users\Jonathan_Moore\AppData\Local\Temp\.NETFramework,Version=v4.0.AssemblyAttributes.cpp"
+         .NETFramework,Version=v4.0.AssemblyAttributes.cpp
+       ResourceCompile:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /D _UNICODE /D UNICODE /l"0x0409" /nologo /fo"Debug\app.res" app.rc 
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"Debug\ManagedLabelRNA32.dll" /INCREMENTAL /NOLOGO /MANIFEST /ManifestFile:"Debug\ManagedLabelRNA32.dll.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\Jonathan_Moore\Documents\Visual Studio 2010\Projects\Biology\RNA Analysis\rCAD\ManagedLabelRNA32\Debug\ManagedLabelRNA32.pdb" /ASSEMBLYDEBUG /TLBID:1 /DYNAMICBASE /FIXED:NO /NXCOMPAT /MACHINE:X86 /DLL Debug\app.res
+         Debug\AssemblyInfo.obj
+         Debug\ManagedLabelRNA.obj
+         Debug\Random.obj
+         Debug\RNA.obj
+         Debug\Stdafx.obj
+         Debug\util.obj
+         "Debug\.NETFramework,Version=v4.0.AssemblyAttributes.obj"
+         ManagedLabelRNA32.vcxproj -> C:\Users\Jonathan_Moore\Documents\Visual Studio 2010\Projects\Biology\RNA Analysis\rCAD\ManagedLabelRNA32\Debug\ManagedLabelRNA32.dll
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"Debug\ManagedLabelRNA32.dll;#2" /manifest Debug\ManagedLabelRNA32.dll.intermediate.manifest
+       FinalizeBuildStatus:
+         Deleting file "Debug\ManagedLabelRNA32.unsuccessfulbuild".
+         Touching "Debug\ManagedLabelRNA32.lastbuildstate".
+     1>Done Building Project "C:\Users\Jonathan_Moore\Documents\Visual Studio 2010\Projects\Biology\RNA Analysis\rCAD\ManagedLabelRNA32\ManagedLabelRNA32.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:09.07

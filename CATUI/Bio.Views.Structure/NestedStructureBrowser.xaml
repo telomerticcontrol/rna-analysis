@@ -1,0 +1,142 @@
+﻿<!--/* 
+* Copyright (c) 2009, The University of Texas at Austin
+* All rights reserved.
+*
+* Redistribution and use in source and binary forms, with or without modification, 
+* are permitted provided that the following conditions are met:
+*
+* 1. Redistributions of source code must retain the above copyright notice, 
+* this list of conditions and the following disclaimer.
+*
+* 2. Redistributions in binary form must reproduce the above copyright notice, 
+* this list of conditions and the following disclaimer in the documentation and/or other materials 
+* provided with the distribution.
+*
+* Neither the name of The University of Texas at Austin nor the names of its contributors may be 
+* used to endorse or promote products derived from this software without specific prior written 
+* permission.
+* 
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR 
+* IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND 
+* FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS 
+* BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES 
+* (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
+* PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
+* CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF 
+* THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/-->
+    
+<UserControl x:Class="Bio.Views.Structure.NestedStructureBrowser"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ViewModels="clr-namespace:Bio.Views.Structure.ViewModels">
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type ViewModels:NestedElementTickViewModel}">
+            <Grid x:Name="Tick"
+                  Width="{Binding Path=TickWidth}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Line Grid.Row="0"
+                      Grid.Column="0"
+                      X1="0"
+                      X2="0"
+                      Y1="0"
+                      Y2="1"
+                      Stretch="Fill"
+                      Stroke="Black"
+                      StrokeThickness="1"
+                      HorizontalAlignment="Center">
+                </Line>
+                <TextBlock Grid.Row="1"
+                           Grid.Column="0"
+                           Text="{Binding Path=TickText}"
+                           HorizontalAlignment="Center"
+                           FontSize="8pt"
+                           FontFamily="Courier New"></TextBlock>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type ViewModels:NestedElementViewModel}">
+            <Path x:Name="lineElemNt"
+                  Stroke="Black"
+                  StrokeThickness="6"
+                  Data="{Binding Path=LinePath}">
+                <Path.ToolTip>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock>Nt: </TextBlock>
+                        <TextBlock Text="{Binding Path=Index}"></TextBlock>
+                    </StackPanel>
+                </Path.ToolTip>
+            </Path>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Path=IsSelected}" Value="True">
+                    <Setter Property="Stroke" TargetName="lineElemNt" Value="Red"></Setter>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type ViewModels:NestedBasePairViewModel}">
+            <Path x:Name="lineBP"
+                  Stroke="Red"
+                  StrokeThickness="1.5"
+                  Data="{Binding Path=Connector}"></Path>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Path=IsSelected}" Value="True">
+                    <Setter Property="Stroke" TargetName="lineBP" Value="DarkGoldenrod"></Setter>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+    </UserControl.Resources>
+    <DockPanel>
+        <StatusBar DockPanel.Dock="Top">
+            <StatusBarItem>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock>Nesting Diagram:</TextBlock>
+                    <TextBlock Text="{Binding ElementName=lb, Path=SelectedItem}"></TextBlock>
+                </StackPanel>
+            </StatusBarItem>
+            <StatusBarItem HorizontalAlignment="Right">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock>Zoom:</TextBlock>
+                    <Slider x:Name="viewScaler" Value="1" Minimum=".5" Maximum="10" Width="100"
+                        TickFrequency=".1" TickPlacement="TopLeft" Orientation="Horizontal"></Slider>
+                </StackPanel>
+            </StatusBarItem>
+        </StatusBar>
+        <ListBox x:Name="lb"
+                     ItemsSource="{Binding Path=ModelElements}"
+                     Style="{x:Null}">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="Canvas.Top" Value="{Binding Path=Y}"></Setter>
+                    <Setter Property="Canvas.Left" Value="{Binding Path=X}"></Setter>
+                    <Setter Property="IsSelected" Value="{Binding Path=IsSelected, Mode=TwoWay}"></Setter>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                </ContentPresenter>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas Width="{Binding Path=Width}"
+                            Height="{Binding Path=Height}">
+                        <Canvas.LayoutTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="{Binding ElementName=viewScaler, Path=Value}"
+                                                ScaleY="{Binding ElementName=viewScaler, Path=Value}"
+                                                CenterX="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ScrollViewer}}, Path=ContentHorizontalOffset}"
+                                                CenterY="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ScrollViewer}}, Path=ContentVerticalOffset}"></ScaleTransform>
+                            </TransformGroup>
+                        </Canvas.LayoutTransform>
+                    </Canvas>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+        </ListBox>
+    </DockPanel>
+</UserControl>

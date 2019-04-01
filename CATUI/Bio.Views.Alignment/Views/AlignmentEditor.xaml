@@ -1,0 +1,498 @@
+﻿<!--/* 
+* Copyright (c) 2009, The University of Texas at Austin
+* All rights reserved.
+*
+* Redistribution and use in source and binary forms, with or without modification, 
+* are permitted provided that the following conditions are met:
+*
+* 1. Redistributions of source code must retain the above copyright notice, 
+* this list of conditions and the following disclaimer.
+*
+* 2. Redistributions in binary form must reproduce the above copyright notice, 
+* this list of conditions and the following disclaimer in the documentation and/or other materials 
+* provided with the distribution.
+*
+* Neither the name of The University of Texas at Austin nor the names of its contributors may be 
+* used to endorse or promote products derived from this software without specific prior written 
+* permission.
+* 
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR 
+* IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND 
+* FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS 
+* BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES 
+* (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
+* PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
+* CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF 
+* THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+* THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/-->
+    
+<UserControl x:Class="Bio.Views.Alignment.Views.AlignmentEditor"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Internal="clr-namespace:Bio.Views.Alignment.Internal" 
+    xmlns:julmar="http://www.julmar.com/wpfhelpers" 
+    xmlns:ViewModels="clr-namespace:Bio.Views.Alignment.ViewModels" 
+    xmlns:Controls="clr-namespace:Bio.Views.Alignment.Controls" 
+    xmlns:Interactivity="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
+    xmlns:Utilities="clr-namespace:Bio.Views.Utilities;assembly=Bio.Views" 
+    FocusManager.FocusedElement="{Binding ElementName=LeftAlignmentView}" TextOptions.TextFormattingMode="Display" FontFamily="Segoe UI, Verdana"
+    MinHeight="400" MinWidth="600" mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
+
+    <UserControl.Resources>
+        <Style x:Key="headerStyle" TargetType="{x:Type GridViewColumnHeader}" BasedOn="{StaticResource {x:Type GridViewColumnHeader}}">
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="BorderThickness" Value="2,1" />
+        </Style>
+
+        <julmar:MultiConverter x:Key="doublePlusOneConverter">
+            <julmar:DoubleToIntegerConverter />
+            <julmar:MathConverter />
+        </julmar:MultiConverter>
+        
+        <DataTemplate x:Key="ScrollbarToolTip">
+            <Label Content="{Binding Value, Converter={StaticResource doublePlusOneConverter}, ConverterParameter=+1}" Foreground="White" FontWeight="Bold" />
+        </DataTemplate>
+
+        <julmar:DoubleToIntegerConverter x:Key="DoubleToIntegerConverter" />
+        <julmar:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+
+        <DataTemplate x:Key="AlignmentEntityCellTemplate" DataType="{x:Type ViewModels:AlignmentEntityViewModel}">
+            <Controls:SequenceBlock x:Name="sequence" 
+                                    Sequence="{Binding AlignedData}" IsActive="{Binding IsFocused}"
+                                    SequenceColorSelector="{Binding Parent.NucleotideColorSelector}"
+                                    FontFamily="{Binding Parent.Options.AlignmentFontFamily}" 
+                                    FontSize="{Binding Parent.Options.AlignmentFontSizeDpi}"
+                                    Column="{Binding Path=Tag.FirstColumn, Mode=TwoWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" 
+                                    Count="{Binding Path=Tag.VisibleColumns, Mode=OneWayToSource, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" 
+                                    FocusedColumnIndex="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}, Path=Tag.FocusedColumnIndex, Mode=TwoWay}"
+                                    julmar:RenderBehavior.Invalidate="{Binding Parent.LockedRows.Count}"
+                                    UseLayoutRounding="True" VerticalAlignment="Center" />
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                    <Setter TargetName="sequence" Property="Background" Value="{Binding Parent.Options.SelectionBrush}" />
+                    <Setter TargetName="sequence" Property="BorderBrush" Value="{Binding Parent.Options.SelectionBorderBrush}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsFocused}" Value="True">
+                    <Setter TargetName="sequence" Property="Background" Value="{Binding Parent.Options.FocusedBrush}" />
+                    <Setter TargetName="sequence" Property="BorderBrush" Value="{Binding Parent.Options.FocusedBorderBrush}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsReferenceSequence}" Value="True">
+                    <Setter TargetName="sequence" Property="Background" Value="{Binding ReferenceSequenceColor}" />
+                    <Setter TargetName="sequence" Property="BorderBrush" Value="{Binding ReferenceSequenceBorder}" />
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+        <DataTemplate x:Key="rowNumberCellTemplate">
+            <Grid SizeChanged="OnLeftAlignmentSizeChanged">
+                <TextBlock x:Name="tb" Text="{Binding DisplayIndexText}" FontFamily="{Binding Parent.Options.SelectedFont}" FontSize="{Binding Parent.Options.SelectedFontSizeDpi}"
+                           Foreground="{Binding Parent.Options.LineNumberTextBrush}" HorizontalAlignment="Left" VerticalAlignment="Center" />
+                <Rectangle Width="1" VerticalAlignment="Stretch" HorizontalAlignment="Left" Fill="DarkGray" Margin="-5,0,0,0" />
+                <Rectangle Width="1" VerticalAlignment="Stretch" HorizontalAlignment="Right" Fill="DarkGray" Margin="0,0,-5,0" />
+            </Grid>
+        </DataTemplate>
+        
+        <DataTemplate x:Key="nameCellTemplate">
+            <Grid x:Name="grid" SizeChanged="OnLeftAlignmentSizeChanged">
+                <Rectangle x:Name="bd" Visibility="Collapsed" Fill="{Binding Parent.Options.SelectionBrush}" Stroke="{Binding Parent.Options.SelectionBorderBrush}" StrokeThickness="1" />
+                <TextBlock x:Name="text" Text="{Binding Header}" TextTrimming="CharacterEllipsis" Foreground="{Binding Parent.Options.ForegroundTextBrush}"
+                           FontFamily="{Binding Parent.Options.SelectedFont}" FontSize="{Binding Parent.Options.SelectedFontSizeDpi}" />
+                <Rectangle Width="1" VerticalAlignment="Stretch" HorizontalAlignment="Left" Fill="DarkGray" Margin="-5,0,0,0" />
+                <Rectangle Width="1" VerticalAlignment="Stretch" HorizontalAlignment="Right" Fill="DarkGray" Margin="0,0,-5,0" />
+
+                <Grid.ToolTip>
+                    <TextBlock Text="{Binding Header}" ToolTip="{Binding Header}" />
+                </Grid.ToolTip>
+
+                <Grid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Reference Sequence" Command="{Binding Parent.MakeReferenceSequence}" Margin="5,4"
+                                              CommandParameter="{Binding}" IsCheckable="True" IsChecked="{Binding IsReferenceSequence, Mode=OneWay}" />
+                    </ContextMenu>
+                </Grid.ContextMenu>
+            </Grid>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                    <Setter TargetName="bd" Property="Visibility" Value="Visible" />
+                    <Setter TargetName="text" Property="Foreground" Value="{Binding Parent.Options.SelectionTextBrush}" />
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
+        <GridViewColumn x:Key="RowNumberColumnHeader" Header="#" Width="60" CellTemplate="{StaticResource rowNumberCellTemplate}" />
+
+        <GridViewColumnCollection x:Key="gvMainColumnDefinition">
+            <GridViewColumn Header="Name" Width="Auto" CellTemplate="{StaticResource nameCellTemplate}" />
+            <GridViewColumn Width="Auto" CellTemplate="{StaticResource AlignmentEntityCellTemplate}">
+                <GridViewColumn.Header>
+                    <Internal:HeaderRulerIndex Column="{Binding LeftView.FirstColumn, Mode=TwoWay}" CurrentColumn="{Binding FocusedColumnIndex}"
+                                               FontFamily="{Binding Options.AlignmentFontFamily}" FontSize="{Binding Options.AlignmentFontSizeDpi}"
+                                               DisplayIncrement="10" Margin="1,0,0,0" />
+                </GridViewColumn.Header>
+            </GridViewColumn>
+        </GridViewColumnCollection>
+
+        <GridViewColumnCollection x:Key="gvRightColumnDefinition">
+            <GridViewColumn Width="Auto" CellTemplate="{StaticResource AlignmentEntityCellTemplate}">
+                <GridViewColumn.Header>
+                    <Internal:HeaderRulerIndex Column="{Binding RightView.FirstColumn, Mode=TwoWay}" CurrentColumn="{Binding FocusedColumnIndex}"
+                                               FontFamily="{Binding Options.AlignmentFontFamily}" FontSize="{Binding Options.AlignmentFontSizeDpi}"
+                                               DisplayIncrement="10" Margin="1,0,0,0" />
+                </GridViewColumn.Header>
+            </GridViewColumn>
+        </GridViewColumnCollection>
+
+        <DataTemplate x:Key="LeftItemTemplate">
+            <GridViewRowPresenter Content="{Binding}" Columns="{StaticResource gvMainColumnDefinition}" />
+        </DataTemplate>
+
+        <DataTemplate x:Key="RightItemTemplate">
+            <GridViewRowPresenter Content="{Binding}" Columns="{StaticResource gvRightColumnDefinition}" />
+        </DataTemplate>
+
+        <DataTemplate x:Key="ItemDragTemplate">
+            <Border BorderBrush="Black" BorderThickness="2">
+                <Border BorderBrush="White" BorderThickness="1" Background="#FF353535">
+                    <TextBlock Text="{Binding Header}" Foreground="White" Margin="5" />
+                </Border>
+            </Border>
+        </DataTemplate>
+      
+        <DataTemplate x:Key="GroupItemTemplate">
+            <Grid Background="{Binding Parent.Options.GroupHeaderBrush}" ToolTip="{Binding TaxonomyId}">
+               <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBlock Margin="5" Text="{Binding TaxonomyGroupLevel}" Foreground="{Binding Parent.Options.GroupHeaderTextBrush}" FontWeight="Bold"
+                           FontFamily="{Binding Parent.Options.SelectedFont}" FontSize="{Binding Parent.Options.SelectedFontSizeDpi}"
+                           Visibility="{Binding Parent.Options.ShowTaxonomyGroupLevel, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <TextBlock Grid.Column="1" Margin="5" Text="{Binding Header}" Foreground="{Binding Parent.Options.GroupHeaderTextBrush}" 
+                           FontFamily="{Binding Parent.Options.SelectedFont}" FontSize="{Binding Parent.Options.SelectedFontSizeDpi}" />
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="ShadedItemTemplate">
+            <Grid Background="{Binding Parent.Options.GroupHeaderBrush}" ToolTip="{Binding TaxonomyId}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBlock Margin="5" Text="{Binding TaxonomyGroupLevel}" Foreground="{Binding Parent.Options.GroupHeaderBrush}" FontWeight="Bold"
+                           FontFamily="{Binding Parent.Options.SelectedFont}" FontSize="{Binding Parent.Options.SelectedFontSizeDpi}"
+                           Visibility="{Binding Parent.Options.ShowTaxonomyGroupLevel, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <TextBlock Grid.Column="1" Margin="5" Text="{Binding Header}" Foreground="{Binding Parent.Options.GroupHeaderBrush}" 
+                           FontFamily="{Binding Parent.Options.SelectedFont}" FontSize="{Binding Parent.Options.SelectedFontSizeDpi}" />
+            </Grid>
+        </DataTemplate>
+
+        <Internal:RowSelector x:Key="MainGroupOrItemSelector" GroupTemplate="{StaticResource GroupItemTemplate}" SequenceTemplate="{StaticResource LeftItemTemplate}" />
+        <Internal:RowSelector x:Key="RightGroupOrItemSelector" GroupTemplate="{StaticResource ShadedItemTemplate}" SequenceTemplate="{StaticResource RightItemTemplate}" />
+
+        <Style x:Key="NucelotideListBoxStyle" TargetType="ListBox" BasedOn="{StaticResource {x:Type ListBox}}">
+            <Setter Property="SelectionMode" Value="Extended" />
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+            <Setter Property="Background" Value="{Binding Options.BackgroundBrush}" />
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+            <Setter Property="ScrollViewer.IsDeferredScrollingEnabled" Value="True" />
+            <Setter Property="VirtualizingStackPanel.VirtualizationMode" Value="Recycling" />
+            <Setter Property="UseLayoutRounding" Value="True" />
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="IsSelected" Value="{Binding IsSelected,Mode=TwoWay}" />
+                        <Setter Property="FocusVisualStyle">
+                            <Setter.Value>
+                                <Style>
+                                    <Setter Property="Control.Template">
+                                        <Setter.Value>
+                                            <ControlTemplate />
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <ContentPresenter Margin="0" />
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsGroupHeader}" Value="True">
+                                <Setter Property="UIElement.Focusable" Value="False" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBox">
+                        <Border x:Name="Bd" SnapsToDevicePixels="true" Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="1">
+                            <ScrollViewer x:Name="PART_ScrollViewer" Padding="{TemplateBinding Padding}" Focusable="false">
+                                <ScrollViewer.Template>
+                                    <ControlTemplate TargetType="ScrollViewer">
+                                        <Grid x:Name="Grid" Background="{TemplateBinding Background}">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Rectangle x:Name="Corner" Fill="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" Grid.Column="1" Grid.Row="1"/>
+                                            <ScrollContentPresenter x:Name="PART_ScrollContentPresenter" Margin="{TemplateBinding Padding}" Grid.Column="0" Grid.Row="0" 
+                                                                    Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" 
+                                                                    CanContentScroll="{TemplateBinding CanContentScroll}" CanHorizontallyScroll="False" CanVerticallyScroll="False"/>
+                                            <ScrollBar x:Name="PART_VerticalScrollBar" Cursor="Arrow" Grid.Column="1" Grid.Row="0"
+                                                     Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+                                                     Minimum="0" Maximum="{TemplateBinding ScrollableHeight}"
+                                                     Value="{Binding VerticalOffset, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                                     ViewportSize="{TemplateBinding ViewportHeight}">
+                                              <Interactivity:Interaction.Behaviors>
+                                                <julmar:ScrollbarPreviewBehavior ScrollingPreviewTemplate="{StaticResource ScrollbarToolTip}" />
+                                              </Interactivity:Interaction.Behaviors>
+                                          </ScrollBar>
+                                        </Grid>
+                                    </ControlTemplate>
+                                </ScrollViewer.Template>
+                                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            </ScrollViewer>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Background" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+                            </Trigger>
+                            <Trigger Property="IsGrouping" Value="true">
+                                <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="GridViewHeaderStyle" TargetType="GridViewHeaderRowPresenter">
+            <Setter Property="TextElement.FontSize" Value="{Binding Options.SelectedFontSizeDpi}" />
+            <Setter Property="TextElement.FontFamily" Value="{Binding Options.SelectedFont}" />
+            <Setter Property="ColumnHeaderContainerStyle" Value="{StaticResource headerStyle}" />
+        </Style>
+
+    </UserControl.Resources>
+    
+    <UserControl.InputBindings>
+        <KeyBinding Key="C" Modifiers="Control" Command="{Binding GotoColumn}" />
+        <KeyBinding Key="R" Modifiers="Control" Command="{Binding GotoRow}" />
+        <KeyBinding Key="N" Modifiers="Control" Command="{Binding GotoRefColumn}" />
+        <KeyBinding Key="O" Modifiers="Control" Command="{Binding ShowOptionsCommand}" />
+        <KeyBinding Key="T" Modifiers="Control" Command="{Binding FlipGrouping}" />
+        <KeyBinding Key="F" Modifiers="Control" Command="{Binding FindByName}" />
+        <KeyBinding Key="T" Modifiers="Control" Command="{Binding FindByTaxonomy}" />
+        <KeyBinding Key="S" Modifiers="Control" Command="{Binding SplitScreenCommand}" />
+        <KeyBinding Key="B" Modifiers="Control" Command="{Binding ShowBirdsEyeView}" />
+        <KeyBinding Key="R" Modifiers="Alt" Command="{Binding MakeReferenceSequence}" CommandParameter="{Binding FocusedRow}" />
+        <KeyBinding Key="F3" Command="{Binding JumpNextNucleotide}" />
+        <KeyBinding Key="F2" Command="{Binding JumpPreviousNucleotide}" />
+        <KeyBinding Key="F3" Modifiers="Control" Command="{Binding JumpNextRefNucleotide}" />
+        <KeyBinding Key="F2" Modifiers="Control" Command="{Binding JumpPreviousRefNucleotide}" />
+        <KeyBinding Key="PageDown" Modifiers="Control" Command="ScrollBar.PageRightCommand" />
+        <KeyBinding Key="PageUp" Modifiers="Control" Command="ScrollBar.PageLeftCommand" />
+        <KeyBinding Key="Home" Modifiers="Control" Command="ScrollBar.ScrollToLeftEndCommand" />
+        <KeyBinding Key="End" Modifiers="Control" Command="ScrollBar.ScrollToRightEndCommand" />
+        <KeyBinding Key="Left" Command="{Binding ShiftFocusLeft}" />
+        <KeyBinding Key="Right" Command="{Binding ShiftFocusRight}" />  
+    </UserControl.InputBindings>
+    
+    <DockPanel>
+        <StatusBar DockPanel.Dock="Bottom">
+           <ToggleButton ToolTip="Split Screen View" IsChecked="{Binding IsScreenSplit, Mode=OneWay}" Command="{Binding SplitScreenCommand}">
+            <Grid Width="16" Height="16">
+              <Rectangle Stroke="White" StrokeThickness="2" />
+              <Rectangle Stroke="White" StrokeThickness="1" Width="1" Height="12" />
+            </Grid>
+           </ToggleButton>
+           <ToggleButton ToolTip="Show Birds Eye View" IsChecked="{Binding IsBevShowing, Mode=OneWay}" Command="{Binding ShowBirdsEyeView}">
+                <Grid Width="16" Height="16">
+                    <Ellipse Stroke="White" Width="14" Height="10" />
+                    <Ellipse Fill="White" Width="5" Height="5" />
+                </Grid>
+            </ToggleButton>
+            <ToggleButton ToolTip="Turn Grouping On and Off" IsChecked="{Binding IsGrouped, Mode=OneWay}" Command="{Binding FlipGrouping}"> 
+                <Grid Width="16" Height="16">
+                    <Path Stroke="White" Data="M2,2 L2,14 M2,3 L14,3 M2,6 L10,6 M2,8 L8,8 M2,10 L9,10 M2,12 L14,12" Stretch="Fill" />
+                </Grid>
+            </ToggleButton>
+            <Button Command="{Binding ShowOptionsCommand}" ToolTip="Change Visual Options" Padding="4">
+                <Grid Width="16" Height="16">
+                    <Ellipse Stroke="White" StrokeThickness="1" />
+                    <TextBlock Text="i" Foreground="White" FontSize="10" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Grid>
+            </Button>
+            
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="15" />
+                </Grid.ColumnDefinitions>
+                <ComboBox Grid.ColumnSpan="2" Margin="-1" HorizontalAlignment="Right" Width="20">
+                    <ComboBoxItem Content="Goto Column...">
+                        <Interactivity:Interaction.Triggers>
+                            <julmar:ClickTrigger>
+                                <julmar:InvokeCommand Command="{Binding GotoColumn}" />
+                            </julmar:ClickTrigger>
+                        </Interactivity:Interaction.Triggers>
+                    </ComboBoxItem>
+                    <ComboBoxItem Content="Goto Reference Sequence..." IsEnabled="{Binding HasReferenceSequence}">
+                        <Interactivity:Interaction.Triggers>
+                            <julmar:ClickTrigger>
+                                <julmar:InvokeCommand Command="{Binding GotoRefColumn}" />
+                            </julmar:ClickTrigger>
+                        </Interactivity:Interaction.Triggers>
+                    </ComboBoxItem>
+                    <ComboBoxItem Content="Goto Row...">
+                        <Interactivity:Interaction.Triggers>
+                            <julmar:ClickTrigger>
+                                <julmar:InvokeCommand Command="{Binding GotoRow}" />
+                            </julmar:ClickTrigger>
+                        </Interactivity:Interaction.Triggers>
+                    </ComboBoxItem>
+                    <ComboBoxItem Content="Find Name...">
+                        <Interactivity:Interaction.Triggers>
+                            <julmar:ClickTrigger>
+                                <julmar:InvokeCommand Command="{Binding FindByName}" />
+                            </julmar:ClickTrigger>
+                        </Interactivity:Interaction.Triggers>
+                    </ComboBoxItem>
+                  <ComboBoxItem Content="Taxonomy Browser..." IsEnabled="{Binding IsGrouped}">
+                    <Interactivity:Interaction.Triggers>
+                      <julmar:ClickTrigger>
+                        <julmar:InvokeCommand Command="{Binding FindByTaxonomy}" />
+                      </julmar:ClickTrigger>
+                    </Interactivity:Interaction.Triggers>
+                  </ComboBoxItem>
+                </ComboBox>
+                <Button Command="{Binding GotoColumn}" ToolTip="Jump To..." Padding="4" Margin="0">
+                    <Canvas Width="16" Height="16">
+                        <Ellipse Stroke="White" StrokeThickness="1" Width="12" Height="12" />
+                        <Line Stroke="White" StrokeThickness="1" X1="10" X2="16" Y1="10" Y2="16" />
+                    </Canvas>
+                </Button>
+
+            </Grid>
+            
+            <Separator VerticalAlignment="Stretch" HorizontalAlignment="Left" Width="1" />
+            
+            <StatusBarItem HorizontalAlignment="Right">
+                <StackPanel Orientation="Horizontal">
+                    <!-- -->
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding HasReferenceSequence, Converter={StaticResource BooleanToVisibilityConverter}}" TextElement.FontWeight="Bold">
+                       <Separator VerticalAlignment="Stretch" Width="1"  />
+                       <TextBlock Text="[" Margin="6,0,3,0" />
+                       <TextBlock Text="{Binding FocusedColumnReferenceIndex}" />
+                       <TextBlock Text="]" Margin="3,0,6,0" />
+                    </StackPanel>
+                    <Separator VerticalAlignment="Stretch" Width="1" />
+                    <!-- Current position -->
+                    <TextBlock Margin="6,0,0,3" Text="{Binding FocusedColumnIndex, Converter={julmar:MathConverter}, ConverterParameter=+1}" />
+                    <TextBlock Margin="3,0,0,3" Text=" / " />
+                    <TextBlock Margin="3,0,0,3" Text="{Binding TotalColumns}" />
+                    <TextBlock Margin="3,0,0,3" Text=" cols, " />
+                    <TextBlock Margin="6,0,0,3" Text="{Binding FocusedRowDisplayIndex, TargetNullValue=?}" />
+                    <TextBlock Margin="3,0,0,3" Text=" / " />
+                    <TextBlock Margin="3,0,0,3" Text="{Binding TotalEntities}" />
+                    <TextBlock Text=" rows" />
+                </StackPanel> 
+            </StatusBarItem>
+        </StatusBar>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition />
+              <ColumnDefinition Width="Auto" />
+              <ColumnDefinition Width="{Binding RightSidePaneSize, Converter={Internal:DoubleToGridColumnWidth}, Mode=TwoWay}" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Left side -->
+            <GridViewHeaderRowPresenter x:Name="LeftHeader" Style="{StaticResource GridViewHeaderStyle}" 
+                                        Columns="{StaticResource gvMainColumnDefinition}" />
+            
+            <ItemsControl Grid.Row="1" ItemsSource="{Binding LockedRows}" Background="{Binding Options.BackgroundBrush}"
+                   ItemTemplate="{StaticResource LeftItemTemplate}" UseLayoutRounding="True" Tag="{Binding LeftView}"
+                   Utilities:DragDropHelper.IsDropTarget="true" Utilities:DragDropHelper.IsDragSource="true" 
+                   Utilities:DragDropHelper.DragDropTemplate="{StaticResource ItemDragTemplate}"/>
+
+           <Rectangle Margin="0,2" Height="10" Grid.Row="2" Stretch="Fill" Stroke="White" StrokeThickness="1" Grid.ColumnSpan="3"
+                     Fill="{Binding Options.SeparatorBrush}" Visibility="{Binding HasLockedRows, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+            <ListBox x:Name="LeftAlignmentView" Grid.Row="3" Style="{StaticResource NucelotideListBoxStyle}" Tag="{Binding LeftView}"
+                     ItemsSource="{Binding VisibleData}" SelectedItem="{Binding FocusedRow}" 
+                     ItemTemplateSelector="{StaticResource MainGroupOrItemSelector}"
+                     ScrollViewer.VerticalScrollBarVisibility="{Binding IsScreenSplit, Converter={Internal:BooleanToScrollBarVisibilityConverter}}">
+                <Interactivity:Interaction.Behaviors>
+                  <julmar:ViewportSynchronizerBehavior VerticalOffset="{Binding TopRow}" 
+                                                       ViewportHeight="{Binding VisibleRows}" />
+                </Interactivity:Interaction.Behaviors>
+            </ListBox>
+
+            <ScrollBar x:Name="hsbLeft" Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Left" Scroll="OnHorizontalScroll" Cursor="Arrow"
+                       DataContext="{Binding LeftView}" Value="{Binding FirstColumn, Mode=TwoWay}"
+                       Minimum="0" Maximum="{Binding NotVisibleColumns, Converter={StaticResource DoubleToIntegerConverter}}"
+                       ViewportSize="{Binding VisibleColumns, Converter={StaticResource DoubleToIntegerConverter}}"
+                       SmallChange="1" LargeChange="{Binding VisibleColumns, Converter={StaticResource DoubleToIntegerConverter}}">
+              <Interactivity:Interaction.Behaviors>
+                <julmar:ScrollbarPreviewBehavior ScrollingPreviewTemplate="{StaticResource ScrollbarToolTip}" />
+              </Interactivity:Interaction.Behaviors>
+            </ScrollBar>
+
+            <!-- Splitter -->
+            
+            <GridSplitter Width="2" Background="Black" VerticalAlignment="Stretch" HorizontalAlignment="Center" 
+                          Grid.RowSpan="5" Grid.Column="1" ResizeBehavior="PreviousAndNext" 
+                          Visibility="{Binding IsScreenSplit, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            
+            
+            <!-- Right side -->
+            <GridViewHeaderRowPresenter x:Name="RightHeader" Grid.Column="2" Style="{StaticResource GridViewHeaderStyle}" 
+                                        Columns="{StaticResource gvRightColumnDefinition}" />
+
+            <ItemsControl Grid.Row="1" Grid.Column="2" ItemsSource="{Binding LockedRows}" Background="{Binding Options.BackgroundBrush}"
+                   ItemTemplate="{StaticResource RightItemTemplate}" UseLayoutRounding="True" Tag="{Binding RightView}" />
+
+            <ListBox x:Name="RightAlignmentView" Grid.Row="3" Grid.Column="2" Style="{StaticResource NucelotideListBoxStyle}" 
+                     Tag="{Binding RightView}" ItemsSource="{Binding VisibleData}" SelectedItem="{Binding FocusedRow}"
+                     ItemTemplateSelector="{StaticResource RightGroupOrItemSelector}">
+                <Interactivity:Interaction.Behaviors>
+                    <julmar:ViewportSynchronizerBehavior VerticalOffset="{Binding TopRow}" />
+                </Interactivity:Interaction.Behaviors>
+            </ListBox>
+
+            <ScrollBar x:Name="hsbRight" Grid.Row="4" Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Left" Scroll="OnHorizontalScroll" Cursor="Arrow" 
+                       DataContext="{Binding RightView}" Value="{Binding FirstColumn, Mode=TwoWay}"
+                       Minimum="0" Maximum="{Binding NotVisibleColumns, Converter={StaticResource DoubleToIntegerConverter}}" 
+                       ViewportSize="{Binding VisibleColumns, Converter={StaticResource DoubleToIntegerConverter}}"  
+                       SmallChange="1" LargeChange="{Binding VisibleColumns, Converter={StaticResource DoubleToIntegerConverter}}">
+            <Interactivity:Interaction.Behaviors>
+              <julmar:ScrollbarPreviewBehavior ScrollingPreviewTemplate="{StaticResource ScrollbarToolTip}" />
+            </Interactivity:Interaction.Behaviors>
+          </ScrollBar>
+
+          </Grid>
+
+    </DockPanel>
+
+</UserControl>

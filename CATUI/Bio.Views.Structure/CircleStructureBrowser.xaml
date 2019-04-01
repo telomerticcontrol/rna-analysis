@@ -1,0 +1,280 @@
+﻿<!--/* 
+* Copyright (c) 2009, The University of Texas at Austin
+* All rights reserved.
+*
+* Redistribution and use in source and binary forms, with or without modification, 
+* are permitted provided that the following conditions are met:
+*
+* 1. Redistributions of source code must retain the above copyright notice, 
+* this list of conditions and the following disclaimer.
+*
+* 2. Redistributions in binary form must reproduce the above copyright notice, 
+* this list of conditions and the following disclaimer in the documentation and/or other materials 
+* provided with the distribution.
+*
+* Neither the name of The University of Texas at Austin nor the names of its contributors may be 
+* used to endorse or promote products derived from this software without specific prior written 
+* permission.
+* 
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR 
+* IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND 
+* FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS 
+* BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES 
+* (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
+* PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
+* CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF 
+* THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/-->
+    
+<UserControl x:Class="Bio.Views.Structure.CircleStructureBrowser"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+    xmlns:ViewModels="clr-namespace:Bio.Views.Structure.ViewModels">
+    <UserControl.Resources>
+        <ContextMenu x:Key="circleViewerContextMenu">
+            <MenuItem Header="Load PhyloD Data" Command="{Binding Path=LoadPhyloDDataCommand}"></MenuItem>
+        </ContextMenu>
+        <DataTemplate DataType="{x:Type ViewModels:CircleSequenceViewModel}">
+            <Ellipse Width="{Binding Path=Diameter}"
+                     Height="{Binding Path=Diameter}"
+                     Stroke="Black"
+                     StrokeThickness="3">
+            </Ellipse>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type ViewModels:CircleTickMarkViewModel}">
+            <Ellipse Width="{Binding Path=Size}"
+                     Height="{Binding Path=Size}"
+                     Fill="DarkGoldenrod">
+            </Ellipse>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type ViewModels:CircleTickLabelViewModel}">
+            <TextBlock x:Name="TickLabel"
+                       Text="{Binding Path=TickText}"
+                       FontFamily="{Binding Path=Typeface.FontFamily}"
+                       FontStyle="{Binding Path=Typeface.Style}"
+                       FontWeight="{Binding Path=Typeface.Weight}"
+                       FontSize="{Binding Path=LabelSize}">
+            </TextBlock>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type ViewModels:CircleElementViewModel}">
+            <Path x:Name="arcElem"
+                  Stroke="Transparent"
+                  StrokeThickness="2"
+                  Data="{Binding Path=Path}">
+                <Path.ToolTip>
+                    <TextBlock Text="{Binding Path=Label}"></TextBlock>
+                </Path.ToolTip>
+            </Path>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsMouseOver}" Value="True">
+                    <Setter Property="Stroke" TargetName="arcElem" Value="Red"></Setter>
+                    <Setter Property="Fill" TargetName="arcElem" Value="Red"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=IsSelected}" Value="True">
+                    <Setter Property="Stroke" TargetName="arcElem" Value="Green"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Index}" Value="1">
+                    <Setter Property="Stroke" TargetName="arcElem" Value="Blue"></Setter>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type ViewModels:CircleBasePairViewModel}">
+            <Path x:Name="lineElemBP"
+                  Stroke="BlueViolet"
+                  StrokeThickness="0.75"
+                  Data="{Binding Path=Connector}">
+                <Path.ToolTip>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="{Binding Path=BasePair}"></TextBlock>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Path=FivePrimeIndex}"></TextBlock>
+                            <TextBlock>-</TextBlock>
+                            <TextBlock Text="{Binding Path=ThreePrimeIndex}"></TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                </Path.ToolTip>
+            </Path>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Path=IsSelected}" Value="True">
+                    <Setter Property="Stroke" TargetName="lineElemBP" Value="Green"></Setter>
+                    <Setter Property="StrokeThickness" TargetName="lineElemBP" Value="1.5"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsMouseOver}" Value="True">
+                    <Setter Property="Stroke" TargetName="lineElemBP" Value="DarkGoldenrod"></Setter>
+                    <Setter Property="StrokeThickness" TargetName="lineElemBP" Value="1.5"></Setter>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type ViewModels:PhyloDInteractionCircleViewModel}">
+            <Path x:Name="lineElemPhyloD"
+                  Stroke="Aqua"
+                  StrokeThickness="1"
+                  Data="{Binding Path=Connector}"
+                  Visibility="Hidden">
+                <Path.ToolTip>
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock>QValue: </TextBlock>
+                            <TextBlock Text="{Binding Path=QValue}"></TextBlock>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock>PValue:</TextBlock>
+                            <TextBlock Text="{Binding Path=PValue}"></TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                </Path.ToolTip>
+            </Path>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Path=Visible}" Value="True">
+                    <Setter Property="Visibility" TargetName="lineElemPhyloD" Value="Visible"></Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Visible}" Value="False">
+                    <Setter Property="Visibility" TargetName="lineElemPhyloD" Value="Hidden"></Setter>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+        
+        <CollectionViewSource x:Key="phyloDInteractionsVS"
+                              Source="{Binding Path=PhyloDVM.PhyloDElements}">
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription PropertyName="PredictorIndex"></scm:SortDescription> 
+                <scm:SortDescription PropertyName="QValue" Direction="Descending"></scm:SortDescription>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+    </UserControl.Resources>
+    
+    <DockPanel ContextMenu="{StaticResource circleViewerContextMenu}">
+        <StatusBar DockPanel.Dock="Top">
+            <StatusBarItem>
+                <StackPanel Orientation="Horizontal">
+                    <!--<TextBlock>Circle Diagram:</TextBlock>-->
+                    <!--<TextBlock Text="{Binding ElementName=lb, Path=SelectedItem}"></TextBlock>-->
+                    <TextBlock Text="{Binding Path=Status}"></TextBlock>
+                </StackPanel>
+            </StatusBarItem>
+            <StatusBarItem HorizontalAlignment="Right">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock>Show All Interactions</TextBlock>
+                    <CheckBox x:Name="visualInteractionFilterCB"
+                              IsEnabled="{Binding Path=PhyloDVM.IsInteractionDataLoaded}"></CheckBox>
+                    <TextBlock>Filter Interactions</TextBlock>
+                    <CheckBox x:Name="interactionFilterCB"
+                              IsEnabled="{Binding Path=PhyloDVM.IsInteractionDataLoaded}"
+                              IsChecked="{Binding Path=PhyloDVM.IsInteractionDataFiltered, Mode=TwoWay}"></CheckBox>      
+                    <TextBlock>Zoom:</TextBlock>
+                    <Slider x:Name="viewScaler" Value="1" Minimum=".5" Maximum="10" Width="100"
+                        TickFrequency=".1" TickPlacement="TopLeft" Orientation="Horizontal"></Slider>
+                </StackPanel>
+            </StatusBarItem>
+        </StatusBar>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="0.5*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <ListBox x:Name="lb"
+                 ItemsSource="{Binding Path=ModelElements}"
+                 Style="{x:Null}"
+                 Grid.Row="0">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListBoxItem}">
+                        <Setter Property="Canvas.Top" Value="{Binding Path=Y}"></Setter>
+                        <Setter Property="Canvas.Left" Value="{Binding Path=X}"></Setter>
+                        <Setter Property="Canvas.ZIndex" Value="{Binding Path=Z}"></Setter>
+                        <Setter Property="IsSelected" Value="{Binding Path=IsSelected, Mode=TwoWay}"></Setter>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                    </ContentPresenter>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas Width="{Binding Path=Width}"
+                            Height="{Binding Path=Height}">
+                            <Canvas.LayoutTransform>
+                                <TransformGroup>
+                                    <ScaleTransform ScaleX="{Binding ElementName=viewScaler, Path=Value}"
+                                    ScaleY="{Binding ElementName=viewScaler, Path=Value}"
+                                    CenterX="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ScrollViewer}}, Path=ContentHorizontalOffset}"
+                                    CenterY="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type ScrollViewer}}, Path=ContentVerticalOffset}"></ScaleTransform>
+                                </TransformGroup>
+                            </Canvas.LayoutTransform>
+                        </Canvas>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+            </ListBox>
+            
+            <GridSplitter Grid.Row="1"
+                          Background="Black"
+                          Height="2"
+                          ResizeBehavior="PreviousAndNext"
+                          HorizontalAlignment="Stretch">
+            </GridSplitter>
+            
+            <ListView x:Name="detailsView" 
+                      Grid.Row="2"
+                      ItemsSource="{Binding Source={StaticResource phyloDInteractionsVS}}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Predictor Index"
+                                        Width="Auto">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=PredictorIndex}"></TextBlock>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Predictor Nt"
+                                        Width="Auto">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=PredictorIndexNucleotide}"></TextBlock>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Target Index"
+                                        Width="Auto">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=TargetIndex}"></TextBlock>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Target Nt"
+                                        Width="Auto">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=TargetIndexNucleotide}"></TextBlock>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="PValue"
+                                        Width="Auto">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=PValue}"></TextBlock>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="QValue"
+                                        Width="Auto">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=QValue}"></TextBlock>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView> 
+                </ListView.View>
+            </ListView>
+        </Grid>
+    </DockPanel>
+</UserControl>

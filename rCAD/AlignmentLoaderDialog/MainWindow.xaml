@@ -1,0 +1,542 @@
+﻿<!--/* 
+* Copyright (c) 2009, The University of Texas at Austin
+* All rights reserved.
+*
+* Redistribution and use in source and binary forms, with or without modification, 
+* are permitted provided that the following conditions are met:
+*
+* 1. Redistributions of source code must retain the above copyright notice, 
+* this list of conditions and the following disclaimer.
+*
+* 2. Redistributions in binary form must reproduce the above copyright notice, 
+* this list of conditions and the following disclaimer in the documentation and/or other materials 
+* provided with the distribution.
+*
+* Neither the name of The University of Texas at Austin nor the names of its contributors may be 
+* used to endorse or promote products derived from this software without specific prior written 
+* permission.
+* 
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR 
+* IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND 
+* FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS 
+* BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES 
+* (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
+* PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
+* CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF 
+* THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/-->
+<Window x:Class="AlignmentLoaderDialog.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:julmar="http://www.julmar.com/wpfhelpers"
+    xmlns:controls="http://schemas.microsoft.com/wpf/2008/toolkit"    
+    Title="rCAD Alignment Loader, Version 1.00" 
+    Height="500" Width="650" 
+    WindowStartupLocation="CenterScreen" 
+    ResizeMode="NoResize"
+    Icon="{Binding Path=Icon}">
+    <Grid Margin="5">
+        <Grid.Resources>
+            <DataTemplate x:Key="ReviewSequenceMetadata">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width=".45*"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    
+                    <Border Grid.Column="1"
+                            BorderThickness="3"
+                            BorderBrush="LightGray">
+                        <DockPanel Margin="2"
+                                   LastChildFill="False">
+                            <TextBlock Margin="5"
+                                       DockPanel.Dock="Top">
+                                <Bold>Step 3:</Bold>
+                                <Run>Review Sequence Metadata for Alignment</Run>
+                            </TextBlock>
+                            
+                            <Grid DockPanel.Dock="Top">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="0.80*"></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                </Grid.RowDefinitions>
+
+                                <controls:DataGrid ItemsSource="{Binding Path=Alignment.Sequences}"
+                                                   IsSynchronizedWithCurrentItem="True"
+                                                   AutoGenerateColumns="False"
+                                                   IsReadOnly="True"
+                                                   HorizontalGridLinesBrush="Transparent"
+                                                   VerticalGridLinesBrush="Transparent">
+                                    <controls:DataGrid.Columns>
+                                        <controls:DataGridTextColumn Header="Row Label"
+                                                                     Binding="{Binding Path=RowLabel}"
+                                                                     Width="*">
+                                        </controls:DataGridTextColumn>
+                                        <controls:DataGridTextColumn Header="Sequence Length"
+                                                                     Binding="{Binding Path=SequenceLength}"
+                                                                     Width="*">
+                                        </controls:DataGridTextColumn>
+                                    </controls:DataGrid.Columns>
+                                </controls:DataGrid>
+                                
+                                <GroupBox Grid.Row="1"
+                                          Header="Alignment Row Metadata"
+                                          Margin="0,5,0,0">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition></RowDefinition>
+                                            <RowDefinition></RowDefinition>
+                                            <RowDefinition></RowDefinition>
+                                            <RowDefinition Height="Auto"></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="0.40*"></ColumnDefinition>
+                                            <ColumnDefinition></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <TextBlock Text="Scientific Name: "></TextBlock>
+                                        <TextBlock Grid.Column="1" Text="{Binding Path=Alignment.Sequences/ScientificName}"></TextBlock>
+                                        
+                                        <TextBlock Text="Cell Location: " Grid.Row="1"></TextBlock>
+                                        <TextBlock Text="{Binding Path=Alignment.Sequences/CellLocationDescription}" Grid.Row="1" Grid.Column="1"></TextBlock>
+                                        
+                                        <TextBlock Text="Base Pairs: " Grid.Row="2"></TextBlock>
+                                        <TextBlock Text="{Binding Path=Alignment.Sequences/BasePairs}" Grid.Row="2" Grid.Column="1"></TextBlock>
+                                        
+                                        <TextBlock Text="Genbank IDs: " Grid.Row="3"></TextBlock>
+                                        <ItemsControl ItemsSource="{Binding Path=Alignment.Sequences/GenBankIDs}"
+                                                 Grid.Row="3" Grid.Column="1">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding Path=CompoundAccession}">
+                                                    </TextBlock> 
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </Grid>
+                                </GroupBox>
+                                
+                                <GroupBox Grid.Row="2"
+                                          Header="rCAD Mapping Results"
+                                          Visibility="{Binding Path=Alignment.IsMappedToRCAD, Converter={julmar:BooleanToVisibilityConverter TrueTreatment=Visible, FalseTreatment=Collapsed}}">
+                                    <Grid Visibility="{Binding Path=Alignment.Sequences/IsMappedToRCAD, Converter={julmar:BooleanToVisibilityConverter TrueTreatment=Visible, FalseTreatment=Collapsed}}">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition></RowDefinition>
+                                            <RowDefinition></RowDefinition>
+                                            <RowDefinition></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="0.40*"></ColumnDefinition>
+                                            <ColumnDefinition></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <TextBlock Text="rCAD SeqID: "></TextBlock>
+                                        <TextBlock Grid.Column="1" Text="{Binding Path=Alignment.Sequences/rCADSeqID}"></TextBlock>
+                                        
+                                        <TextBlock Grid.Row="1" Text="rCAD TaxID: "></TextBlock>
+                                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Path=Alignment.Sequences/rCADTaxID}"></TextBlock>
+                                        
+                                        <TextBlock Grid.Row="2" Text="rCAD LocationID: "></TextBlock>
+                                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Path=Alignment.Sequences/rCADLocationID}"></TextBlock>
+                                    </Grid>
+                                </GroupBox> 
+                            </Grid>
+                            
+                            <StackPanel DockPanel.Dock="Top">
+                                <DockPanel
+                                       LastChildFill="False"
+                                       Margin="0,10,0,0"
+                                       Visibility="{Binding Path=Alignment.IsMappedToRCAD, Converter={julmar:BooleanToVisibilityConverter TrueTreatment=Collapsed, FalseTreatment=Visible}}">
+                                    <Button DockPanel.Dock="Left" Content="Map to rCAD" Padding="6,2,6,2"
+                                        Command="{Binding Path=Alignment.MapToRCADCommand}"
+                                        CommandParameter="{Binding Path=RCADConnectionObj}"></Button>
+                                    <TextBlock DockPanel.Dock="Left" FontWeight="Bold" Margin="5,3,0,0" Text="Status:"></TextBlock>
+                                    <TextBlock DockPanel.Dock="Left" Margin="5,3,0,0" Text="{Binding Path=Alignment.RCADMappingStatus}"></TextBlock>
+                                </DockPanel>
+
+                                <DockPanel
+                                       LastChildFill="False"
+                                       Margin="0,10,0,0"
+                                       Visibility="{Binding Path=Alignment.IsMappedToRCAD, Converter={julmar:BooleanToVisibilityConverter TrueTreatment=Visible, FalseTreatment=Collapsed}}">
+                                    <Line DockPanel.Dock="Top" X1="0" X2="1" Stretch="Fill" Stroke="Black" StrokeThickness="1" Margin="0,2,0,8"></Line>
+                                    <Button DockPanel.Dock="Left" Content="Load to rCAD" Padding="6,2,6,2"
+                                        Command="{Binding Path=Alignment.LoadToRCADCommand}"
+                                        CommandParameter="{Binding Path=TargetDirectory}"></Button>
+                                    <TextBlock DockPanel.Dock="Left" FontWeight="Bold" Margin="5,3,0,0" Text="Status:"></TextBlock>
+                                    <TextBlock DockPanel.Dock="Left" Margin="5,3,0,0" Text="{Binding Path=Alignment.RCADLoadingStatus}"></TextBlock>
+                                </DockPanel>
+                            </StackPanel>    
+                        </DockPanel>   
+                    </Border>
+                    
+                    <Border BorderThickness="3"
+                            BorderBrush="LightGray">
+                        <StackPanel Margin="5">
+                            <DockPanel LastChildFill="False"
+                                       Margin="5">
+                                <BulletDecorator DockPanel.Dock="Top">
+                                    <BulletDecorator.Bullet>
+                                        <Ellipse Margin="0,5,0,0" Fill="LightGray" Stroke="LightGray" StrokeThickness="1" Width="5" Height="5"></Ellipse>
+                                    </BulletDecorator.Bullet>
+                                    <TextBlock Margin="5,5,0,0" Foreground="LightGray"  FontSize="14" Text="Step 1"></TextBlock>
+                                </BulletDecorator>
+                                <TextBlock Margin="0,5,0,0" Foreground="LightGray" Text="Select rCAD Instance" DockPanel.Dock="Top" />
+                            </DockPanel>
+
+                            <DockPanel LastChildFill="False"
+                                       Margin="5">
+                                <BulletDecorator DockPanel.Dock="Top">
+                                    <BulletDecorator.Bullet>
+                                        <Ellipse Margin="0,5,0,0" Fill="LightGray" Stroke="LightGray" StrokeThickness="1" Width="5" Height="5"></Ellipse>
+                                    </BulletDecorator.Bullet>
+                                    <TextBlock Margin="5,5,0,0" Foreground="LightGray" FontSize="14" Text="Step 2"></TextBlock>
+                                </BulletDecorator>
+                                <TextBlock Margin="0,5,0,0" Foreground="LightGray" Text="Select and Load Alignment" DockPanel.Dock="Top" />
+                            </DockPanel>
+
+                            <DockPanel LastChildFill="False"
+                                       Margin="5">
+                                <BulletDecorator DockPanel.Dock="Top">
+                                    <BulletDecorator.Bullet>
+                                        <Ellipse Margin="0,5,0,0" Fill="Black" Stroke="Black" StrokeThickness="1" Width="5" Height="5"></Ellipse>
+                                    </BulletDecorator.Bullet>
+                                    <TextBlock Margin="5,5,0,0" FontWeight="Bold" FontSize="14" Text="Step 3"></TextBlock>
+                                </BulletDecorator>
+                                <TextBlock Margin="0,5,0,0" Text="Prepare/Import to rCAD" DockPanel.Dock="Top" />
+                            </DockPanel>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </DataTemplate>
+            
+            <DataTemplate x:Key="LoadSequenceAlignment">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width=".45*"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    
+                    
+                    <Border Grid.Column="1"
+                            BorderThickness="3"
+                            BorderBrush="LightGray">
+                        <ScrollViewer>
+                            <DockPanel LastChildFill="False"
+                                   Margin="2">
+                                <TextBlock Margin="5"
+                                       DockPanel.Dock="Top">
+                                <Bold>Step 2:</Bold>
+                                <Run>Select an Alignment Dataset to Load into rCAD</Run>
+                                </TextBlock>
+
+                                <Grid DockPanel.Dock="Top"
+                                  Margin="0,8,0,8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="0.30*"></ColumnDefinition>
+                                        <ColumnDefinition></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock DockPanel.Dock="Left" Margin="5,4,0,0" Text="Alignment Type:"></TextBlock>
+                                    <ComboBox Grid.Column="1" DockPanel.Dock="Left" Margin="8,0,0,0" MinWidth="75" HorizontalAlignment="Left" SelectedValue="{Binding Path=LoadingAlignmentType, Mode=TwoWay}" ItemsSource="{Binding Path=AlignmentTypes}" DisplayMemberPath="Text" SelectionChanged="AlignmentTypeComboxBoxSelectionChanged"></ComboBox>
+                                </Grid>
+
+                                <GroupBox DockPanel.Dock="Top"
+                                      Margin="4,8,20,0"
+                                      Header="Selected Alignment">
+                                    <TextBlock Margin="5,0,0,0" Grid.Column="1" Text="{Binding Path=LoadingAlignmentFile}" TextWrapping="Wrap"></TextBlock>
+                                </GroupBox>
+
+                                <DockPanel DockPanel.Dock="Top"
+                                       LastChildFill="False"
+                                       Margin="4,8,0,0">
+                                    <DockPanel DockPanel.Dock="Top" LastChildFill="False">
+                                        <Button DockPanel.Dock="Left" Margin="2,8,2,8" Padding="6,2,6,2" Command="{Binding Path=LoadAlignmentCommand}" Content="Load Alignment"></Button>
+                                        <Button DockPanel.Dock="Left" Margin="2,8,2,8" Padding="6,2,6,2" Command="{Binding Path=ClearAlignmentCommand}" Content="Clear Alignment"></Button>
+                                    </DockPanel>
+
+                                    <DockPanel DockPanel.Dock="Top" LastChildFill="False">
+                                        <TextBlock DockPanel.Dock="Left" FontWeight="Bold" Text="Status:"></TextBlock>
+                                        <TextBlock DockPanel.Dock="Left" Margin="5,0,0,0" Text="{Binding Path=LoadingAlignmentStatusMessage}"></TextBlock>
+                                    </DockPanel>
+                                </DockPanel>
+
+                                <Line DockPanel.Dock="Top" X1="0" X2="1" Stretch="Fill" Stroke="Black" StrokeThickness="1" Margin="0,8,0,0"></Line>
+
+                                <GroupBox DockPanel.Dock="Top"
+                                      Margin="4,8,4,0"
+                                      Header="Loaded Alignment Metadata"
+                                      Visibility="{Binding Path=IsAlignmentLoaded, Converter={julmar:BooleanToVisibilityConverter TrueTreatment=Visible, FalseTreatment=Hidden}}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="0.50*"></ColumnDefinition>
+                                            <ColumnDefinition></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition></RowDefinition>
+                                            <RowDefinition></RowDefinition>
+                                            <RowDefinition></RowDefinition>
+                                            <RowDefinition></RowDefinition>
+                                            <RowDefinition></RowDefinition>
+                                            <RowDefinition></RowDefinition>
+                                        </Grid.RowDefinitions>
+
+                                        <TextBlock Text="Logical Name: "></TextBlock>
+                                        <TextBlock Grid.Column="1" Text="{Binding Path=Alignment.LogicalName}" HorizontalAlignment="Left"></TextBlock>
+
+                                        <TextBlock Grid.Row="1" Text="Molecule Type: "></TextBlock>
+                                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Path=Alignment.MoleculeType}" HorizontalAlignment="Left"></TextBlock>
+
+                                        <TextBlock Grid.Row="2" Text="Gene Type: "></TextBlock>
+                                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Path=Alignment.GeneType}" HorizontalAlignment="Left"></TextBlock>
+
+                                        <TextBlock Grid.Row="3" Text="Gene Name: "></TextBlock>
+                                        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Path=Alignment.GeneName}" HorizontalAlignment="Left"></TextBlock>
+
+                                        <TextBlock Grid.Row="4" Text="Sequences: "></TextBlock>
+                                        <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding Path=Alignment.SequenceCount}" HorizontalAlignment="Left"></TextBlock>
+                                        
+                                        <TextBlock Grid.Row="5" Text="Structure Models: "></TextBlock>
+                                        <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding Path=Alignment.StructureModelCount}" HorizontalAlignment="Left"></TextBlock>
+                                    </Grid>
+                                </GroupBox>
+                            </DockPanel>
+                        </ScrollViewer>
+                    </Border>
+ 
+                    <Border BorderThickness="3"
+                            BorderBrush="LightGray">
+                        <StackPanel Margin="5">
+                            <DockPanel LastChildFill="False"
+                                       Margin="5">
+                                <BulletDecorator DockPanel.Dock="Top">
+                                    <BulletDecorator.Bullet>
+                                        <Ellipse Margin="0,5,0,0" Fill="LightGray" Stroke="LightGray" StrokeThickness="1" Width="5" Height="5"></Ellipse>
+                                    </BulletDecorator.Bullet>
+                                    <TextBlock Margin="5,5,0,0" Foreground="LightGray"  FontSize="14" Text="Step 1"></TextBlock>
+                                </BulletDecorator>
+                                <TextBlock Margin="0,5,0,0" Foreground="LightGray" Text="Select rCAD Instance" DockPanel.Dock="Top" />
+                            </DockPanel>
+
+                            <DockPanel LastChildFill="False"
+                                       Margin="5">
+                                <BulletDecorator DockPanel.Dock="Top">
+                                    <BulletDecorator.Bullet>
+                                        <Ellipse Margin="0,5,0,0" Fill="Black" Stroke="Black" StrokeThickness="1" Width="5" Height="5"></Ellipse>
+                                    </BulletDecorator.Bullet>
+                                    <TextBlock Margin="5,5,0,0" FontWeight="Bold" FontSize="14" Text="Step 2"></TextBlock>
+                                </BulletDecorator>
+                                <TextBlock Margin="0,5,0,0" Text="Select and Load Alignment" DockPanel.Dock="Top" />
+                            </DockPanel>
+
+                            <DockPanel LastChildFill="False"
+                                       Margin="5">
+                                <BulletDecorator DockPanel.Dock="Top">
+                                    <BulletDecorator.Bullet>
+                                        <Ellipse Margin="0,5,0,0" Fill="LightGray" Stroke="LightGray" StrokeThickness="1" Width="5" Height="5"></Ellipse>
+                                    </BulletDecorator.Bullet>
+                                    <TextBlock Margin="5,5,0,0" Foreground="LightGray" FontSize="14" Text="Step 3"></TextBlock>
+                                </BulletDecorator>
+                                <TextBlock Margin="0,5,0,0" Foreground="LightGray" Text="Prepare/Import to rCAD" DockPanel.Dock="Top" />
+                            </DockPanel>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </DataTemplate>
+            
+            <DataTemplate x:Key="RCADInstanceSelection">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width=".45*"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    
+                    <Border Grid.Column="1"
+                            BorderThickness="3"
+                            BorderBrush="LightGray">
+                        <ScrollViewer>
+                            <DockPanel Margin="2" LastChildFill="False">
+                                <Border DockPanel.Dock="Top">
+                                    <TextBlock Margin="5">
+                                    <Bold>Step 1:</Bold>
+                                    <Run>Select an rCAD Instance</Run>
+                                    </TextBlock>
+                                </Border>
+
+                                <GroupBox DockPanel.Dock="Top"
+                                  Header="rCAD Server">
+                                    <StackPanel>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="0.30*"></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Margin="0,5,0,0" Text="Host:"></TextBlock>
+                                            <!--<TextBox Grid.Column="1" Margin="5" Text="{Binding Path=Host}"></TextBox>-->
+                                            <TextBlock Grid.Column="1" Margin="5" Text="localhost"></TextBlock>
+                                        </Grid>
+
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="0.30*"></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Margin="0,5,0,0" Text="Instance:"></TextBlock>
+                                            <TextBox Grid.Column="1" Margin="5" Text="{Binding Path=Instance}"></TextBox>
+                                        </Grid>
+                                        
+                                        <CheckBox Margin="5"
+                                                  Content="Using SQL Express or SQL Server Integration Services not available?"
+                                                  IsChecked="{Binding Path=UsingSQLExpress, Mode=TwoWay}"></CheckBox>
+
+                                        <DockPanel Visibility="{Binding Path=UsingSQLExpress, Converter={julmar:BooleanToVisibilityConverter TrueTreatment=Visible, FalseTreatment=Collapsed}}"
+                                                   LastChildFill="False">
+                                            <TextBlock DockPanel.Dock="Left" Margin="0,7,0,0" Text="Output Path:"></TextBlock>
+                                            <TextBox DockPanel.Dock="Left" Margin="5" MinWidth="200" MaxWidth="200" Text="{Binding Path=TargetDirectory, Mode=TwoWay}"></TextBox>
+                                            <Button DockPanel.Dock="Left" Margin="5" Content="Browse..." Command="{Binding Path=SelectOutputDirectoryCommand}"></Button>
+                                        </DockPanel>
+                                    </StackPanel>
+                                </GroupBox>
+
+                                <GroupBox DockPanel.Dock="Top"
+                                  Header="Login Details">
+                                    <StackPanel>
+                                        <RadioButton GroupName="SecurityType" IsChecked="{Binding Path=IsWindowsSecurity}" Content="Windows Authentication"></RadioButton>
+                                        <RadioButton GroupName="SecurityType" IsChecked="{Binding Path=IsSQLServerSecurity}" Content="SQL Server Security"></RadioButton>
+
+                                        <StackPanel Visibility="{Binding Path=IsSQLServerSecurity, Converter={julmar:BooleanToVisibilityConverter TrueTreatment=Visible, FalseTreatment=Collapsed}}" >
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="0.30*"></ColumnDefinition>
+                                                    <ColumnDefinition></ColumnDefinition>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Margin="0,5,0,0" Text="Username:"></TextBlock>
+                                                <TextBox Grid.Column="1" Margin="5" Text="{Binding Path=Username}"></TextBox>
+                                            </Grid>
+
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="0.30*"></ColumnDefinition>
+                                                    <ColumnDefinition></ColumnDefinition>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Margin="0,5,0,0" Text="Password:"></TextBlock>
+                                                <TextBox Grid.Column="1" Margin="5" Text="{Binding Path=Password}"></TextBox>
+                                            </Grid>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </GroupBox>
+
+                                <GroupBox DockPanel.Dock="Top"
+                                      Header="Connection String">
+                                    <TextBlock Margin="0,5,0,0" Text="{Binding Path=ConnectionString}" TextWrapping="Wrap"></TextBlock>
+                                </GroupBox>
+
+                                <GroupBox DockPanel.Dock="Top"
+                                      Header="Connection Test">
+                                    <StackPanel>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="0.20*"></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <Button Margin="2,8,2,8" Padding="6,2,6,2" Command="{Binding Path=TestDBConnectionCommand}" Content="Test"></Button>
+                                            <TextBlock Margin="2,12,2,8" Grid.Column="1" Visibility="{Binding Path=ConnectionValid, Converter={julmar:BooleanToVisibilityConverter TrueTreatment=Visible, FalseTreatment=Hidden}}"
+                                               Text="Configured connection is valid."></TextBlock>
+                                            <TextBlock Margin="2,12,2,8" Grid.Column="1" Visibility="{Binding Path=ConnectionValid, Converter={julmar:BooleanToVisibilityConverter TrueTreatment=Hidden, FalseTreatment=Visible}}"
+                                               Text="Configured connection is not valid."></TextBlock>
+                                        </Grid>
+                                        
+                                        <Grid Visibility="{Binding Path=ConnectionValid, Converter={julmar:BooleanToVisibilityConverter TrueTreatment=Visible, FalseTreatment=Collapsed}}">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="0.30*"></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Margin="0,5,0,0" Text="rCAD DB:"></TextBlock>
+                                            <ComboBox Margin="5,5,200,5" Grid.Column="1" ItemsSource="{Binding Path=InstanceDatabases}" SelectedValue="{Binding Path=Database, Mode=TwoWay}"></ComboBox>
+                                        </Grid>
+                                    </StackPanel>
+                                </GroupBox>
+                            </DockPanel>
+                        </ScrollViewer>
+                    </Border>
+
+                    <Border BorderThickness="3"
+                            BorderBrush="LightGray">
+                        <StackPanel Margin="5">
+                            <DockPanel LastChildFill="False"
+                                       Margin="5">
+                                <BulletDecorator DockPanel.Dock="Top">
+                                    <BulletDecorator.Bullet>
+                                        <Ellipse Margin="0,5,0,0" Fill="Black" Stroke="Black" StrokeThickness="1" Width="5" Height="5"></Ellipse>
+                                    </BulletDecorator.Bullet>
+                                    <TextBlock Margin="5,5,0,0" FontWeight="Bold"  FontSize="14" Text="Step 1"></TextBlock>
+                                </BulletDecorator>
+                                <TextBlock Margin="0,5,0,0" Text="Select rCAD Instance" DockPanel.Dock="Top" />
+                            </DockPanel>
+
+                            <DockPanel LastChildFill="False"
+                                       Margin="5">
+                                <BulletDecorator DockPanel.Dock="Top">
+                                    <BulletDecorator.Bullet>
+                                        <Ellipse Margin="0,5,0,0" Fill="LightGray" Stroke="LightGray" StrokeThickness="1" Width="5" Height="5"></Ellipse>
+                                    </BulletDecorator.Bullet>
+                                    <TextBlock Margin="5,5,0,0" Foreground="LightGray" FontSize="14" Text="Step 2"></TextBlock>
+                                </BulletDecorator>
+                                <TextBlock Margin="0,5,0,0" Foreground="LightGray" Text="Select and Load Alignment" DockPanel.Dock="Top" />
+                            </DockPanel>
+
+                            <DockPanel LastChildFill="False"
+                                       Margin="5">
+                                <BulletDecorator DockPanel.Dock="Top">
+                                    <BulletDecorator.Bullet>
+                                        <Ellipse Margin="0,5,0,0" Fill="LightGray" Stroke="LightGray" StrokeThickness="1" Width="5" Height="5"></Ellipse>
+                                    </BulletDecorator.Bullet>
+                                    <TextBlock Margin="5,5,0,0" Foreground="LightGray" FontSize="14" Text="Step 3"></TextBlock>
+                                </BulletDecorator>
+                                <TextBlock Margin="0,5,0,0" Foreground="LightGray" Text="Prepare/Import to rCAD" DockPanel.Dock="Top" />
+                            </DockPanel>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </DataTemplate>
+        </Grid.Resources>
+        
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Border BorderThickness="3"
+                BorderBrush="LightGray"
+                Background="AntiqueWhite">
+            <TextBlock FontSize="20" Margin="10" Text="rCAD Alignment Loader"></TextBlock>
+        </Border>
+
+        <ContentControl Grid.Row="1" Content="{Binding}">
+            <ContentControl.Style>
+                <Style TargetType="ContentControl">
+                    <Setter Property="ContentTemplate" Value="{StaticResource RCADInstanceSelection}"></Setter>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=CurrentStep}" Value="2">
+                            <Setter Property="ContentTemplate" Value="{StaticResource LoadSequenceAlignment}"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=CurrentStep}" Value="3">
+                            <Setter Property="ContentTemplate" Value="{StaticResource ReviewSequenceMetadata}"></Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ContentControl.Style>
+        </ContentControl>
+        
+        <DockPanel Grid.Row="2" LastChildFill="False" Background="Azure">
+            <Button DockPanel.Dock="Left" Margin="2,8,2,8" Padding="6,2,6,2" Command="{Binding Path=ExitCommand}" Content="Exit"></Button>
+            <Button DockPanel.Dock="Right" Margin="2,8,2,8" Padding="6,2,6,2" Command="{Binding Path=NextCommand}" Content="Next"></Button>
+            <Button DockPanel.Dock="Right" Margin="2,8,2,8" Padding="6,2,6,2" Command="{Binding Path=PreviousCommand}" Content="Previous"></Button>
+        </DockPanel>
+    </Grid>
+</Window>

@@ -1,0 +1,8 @@
+﻿<Window x:Class="TestHarness.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Views="clr-namespace:Bio.Views.Alignment.Views;assembly=Bio.Views.Alignment" 
+        Title="BEV Test" Height="350" Width="525">
+    <Grid>
+      <Views:BirdsEyeViewer />
+    </Grid>
+</Window>

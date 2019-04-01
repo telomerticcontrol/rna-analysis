@@ -1,0 +1,103 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Bio.Views.Alignment.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="SelectedFontSize" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">12</Value>
+    </Setting>
+    <Setting Name="SelectedFont" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Arial</Value>
+    </Setting>
+    <Setting Name="MinGroupingRange" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">5</Value>
+    </Setting>
+    <Setting Name="ShowRowNumbers" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="ReferenceSequenceColors" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;string&gt;LightBlue&lt;/string&gt;
+  &lt;string&gt;LightCoral&lt;/string&gt;
+  &lt;string&gt;LightCyan&lt;/string&gt;
+  &lt;string&gt;LightGoldenrodYellow&lt;/string&gt;
+  &lt;string&gt;LightGray&lt;/string&gt;
+  &lt;string&gt;LightGreen&lt;/string&gt;
+  &lt;string&gt;LightPink&lt;/string&gt;
+  &lt;string&gt;LightSalmon&lt;/string&gt;
+  &lt;string&gt;LightSeaGreen&lt;/string&gt;
+  &lt;string&gt;LightSkyBlue&lt;/string&gt;
+  &lt;string&gt;LightSlateGray&lt;/string&gt;
+  &lt;string&gt;LightSteelBlue&lt;/string&gt;
+  &lt;string&gt;LightYellow&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
+    </Setting>
+    <Setting Name="SelectionColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">SkyBlue</Value>
+    </Setting>
+    <Setting Name="BackgroundColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">White</Value>
+    </Setting>
+    <Setting Name="SelectionTextColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">White</Value>
+    </Setting>
+    <Setting Name="SeparatorColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">DarkBlue</Value>
+    </Setting>
+    <Setting Name="SelectionBorderColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">DarkBlue</Value>
+    </Setting>
+    <Setting Name="FocusedColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">White</Value>
+    </Setting>
+    <Setting Name="FocusedBorderColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Black</Value>
+    </Setting>
+    <Setting Name="ForegroundTextColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Black</Value>
+    </Setting>
+    <Setting Name="LineNumberTextColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">DarkGreen</Value>
+    </Setting>
+    <Setting Name="FocusRectColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#30ff0000</Value>
+    </Setting>
+    <Setting Name="FocusRectBorderColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">DarkRed</Value>
+    </Setting>
+    <Setting Name="AlignmentFontSize" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">12</Value>
+    </Setting>
+    <Setting Name="AlignmentFontFamily" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Consolas</Value>
+    </Setting>
+    <Setting Name="GroupHeaderBackgroundColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FF363636</Value>
+    </Setting>
+    <Setting Name="GroupHeaderTextColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">White</Value>
+    </Setting>
+    <Setting Name="NucleotideColors" Type="System.Collections.Specialized.StringCollection" Scope="User">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;string&gt;AChocolate&lt;/string&gt;
+  &lt;string&gt;IIndianRed&lt;/string&gt;
+  &lt;string&gt;GDarkGreen&lt;/string&gt;
+  &lt;string&gt;UDeepPink&lt;/string&gt;
+  &lt;string&gt;CDarkBlue&lt;/string&gt;
+  &lt;string&gt;NDarkOliveGreen&lt;/string&gt;
+  &lt;string&gt;-LightGray&lt;/string&gt;
+  &lt;string&gt;~LightGray&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
+    </Setting>
+    <Setting Name="ShowTaxonomyGroupLevel" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="SortByTaxonomy" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="OpenWithGrouping" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

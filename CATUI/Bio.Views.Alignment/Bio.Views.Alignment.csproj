@@ -1,0 +1,254 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{24C70237-745A-4F80-AE67-5F186FEB583F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Bio.Views.Alignment</RootNamespace>
+    <AssemblyName>Bio.Views.Alignment</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <StartupObject>
+    </StartupObject>
+    <ExpressionBlendVersion>3.0.1927.0</ExpressionBlendVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Julmar.Wpf.Behaviors">
+      <HintPath>..\Dependencies\Julmar.Wpf.Behaviors.dll</HintPath>
+    </Reference>
+    <Reference Include="JulMar.Wpf.Helpers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=ff1c121d8ddc1581, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\JulMar.Wpf.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Windows.Interactivity, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Options\OptionsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\generic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AlignmentEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\BirdsEyeViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TaxonomyJumpView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\FindSearchView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\GotoColumnRowView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\GotoRefSeqColumnView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controls\SequenceColorSelector.cs" />
+    <Compile Include="Controls\SequenceTextDrawingVisualHost.cs" />
+    <Compile Include="Internal\DoubleToGridColumnWidth.cs" />
+    <Compile Include="Internal\BooleanToScrollBarVisibilityConverter.cs" />
+    <Compile Include="Internal\AlignmentViewMessages.cs" />
+    <Compile Include="Internal\SequenceTextDrawingVisual.cs" />
+    <Compile Include="Options\DisplayOptionsViewModel.cs" />
+    <Compile Include="Internal\NucleotideColorSelector.cs" />
+    <Compile Include="Options\OptionPane.cs" />
+    <Compile Include="Options\RuntimeOptionsViewModel.cs" />
+    <Compile Include="Options\OptionsWindow.xaml.cs">
+      <DependentUpon>OptionsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\AlignmentEntityViewModel.cs" />
+    <Compile Include="Internal\GroupHeader.cs" />
+    <Compile Include="Internal\GroupListGenerator.cs" />
+    <Compile Include="Internal\HeaderRulerIndex.cs" />
+    <Compile Include="Internal\RowSelector.cs" />
+    <Compile Include="Controls\TextAttributes.cs" />
+    <Compile Include="Internal\ColumnSelectionAdorner.cs" />
+    <Compile Include="Text\RectSelectionAdorner.cs" />
+    <Compile Include="Controls\SequenceBlock.cs" />
+    <Compile Include="Text\SimpleTextParagraphProperties.cs" />
+    <Compile Include="Text\SimpleTextRunProperties.cs" />
+    <Compile Include="Text\SequenceTextStore.cs" />
+    <Compile Include="ViewModels\AlignmentViewModelCreator.cs" />
+    <Compile Include="ViewModels\BirdsEyeViewModel.cs" />
+    <Compile Include="ViewModels\FindSearchViewModel.cs" />
+    <Compile Include="ViewModels\GotoColumnViewModel.cs" />
+    <Compile Include="ViewModels\SplitPaneViewModel.cs" />
+    <Compile Include="ViewModels\TaxonomyJumpViewModel.cs" />
+    <Compile Include="Views\AlignmentEditor.xaml.cs">
+      <DependentUpon>AlignmentEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="ViewModels\AlignmentViewModel.cs" />
+    <Compile Include="Views\BirdsEyeViewer.xaml.cs">
+      <DependentUpon>BirdsEyeViewer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TaxonomyJumpView.xaml.cs">
+      <DependentUpon>TaxonomyJumpView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FindSearchView.xaml.cs">
+      <DependentUpon>FindSearchView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\GotoColumnRowView.xaml.cs">
+      <DependentUpon>GotoColumnRowView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\GotoRefSeqColumnView.xaml.cs">
+      <DependentUpon>GotoRefSeqColumnView.xaml</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Bio.Controls.ColorPicker\Bio.Controls.ColorPicker.csproj">
+      <Project>{0DCCC8D5-C133-476E-B454-62CF09BE71C8}</Project>
+      <Name>Bio.Controls.ColorPicker</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bio.Data.Providers\Bio.Data.Providers.csproj">
+      <Project>{A51F4CFF-8076-492C-9DC6-22DA22A1B8F8}</Project>
+      <Name>Bio.Data.Providers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bio.Views\Bio.Views.csproj">
+      <Project>{D2848F04-8E73-481B-975A-D0F9BC33049F}</Project>
+      <Name>Bio.Views</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bio.Data\Bio.Data.csproj">
+      <Project>{2864DE9B-195F-4AF6-89B2-F375F80DD7D9}</Project>
+      <Name>Bio.Data</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\alignment.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.VisualBasic.PowerPacks.10.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft Visual Basic PowerPacks 10.0</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\bev_icon.png" />
+    <Resource Include="images\tax_icon.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

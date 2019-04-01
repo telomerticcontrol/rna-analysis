@@ -1,0 +1,179 @@
+﻿<!--/* 
+* Copyright (c) 2009, The University of Texas at Austin
+* All rights reserved.
+*
+* Redistribution and use in source and binary forms, with or without modification, 
+* are permitted provided that the following conditions are met:
+*
+* 1. Redistributions of source code must retain the above copyright notice, 
+* this list of conditions and the following disclaimer.
+*
+* 2. Redistributions in binary form must reproduce the above copyright notice, 
+* this list of conditions and the following disclaimer in the documentation and/or other materials 
+* provided with the distribution.
+*
+* Neither the name of The University of Texas at Austin nor the names of its contributors may be 
+* used to endorse or promote products derived from this software without specific prior written 
+* permission.
+* 
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR 
+* IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND 
+* FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS 
+* BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES 
+* (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
+* PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
+* CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF 
+* THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/-->
+
+<ResourceDictionary x:Class="Bio.Data.Providers.rCAD.RI.Resources.DataTemplates"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:julmar="http://www.julmar.com/wpfhelpers"                    
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <HierarchicalDataTemplate x:Key="TaxonomyData" ItemsSource="{Binding Children}">
+        <TextBlock Margin="1,5" Text="{Binding Name}">
+            <TextBlock.Style>
+                <Style TargetType="TextBlock">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                            <Setter Property="FontWeight" Value="Bold" />
+                            <Setter Property="Foreground" Value="Black" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+    </HierarchicalDataTemplate>
+
+    <DataTemplate x:Key="FilterSelection">
+        <DockPanel>
+            <Border Margin="5" DockPanel.Dock="Top">
+                <TextBlock Margin="5">
+                <Bold>Step 2:</Bold>
+                <Run>Select the filter criteria to locate sequence alignments</Run>
+                </TextBlock>
+            </Border>
+
+            <GroupBox Header="Filters" Margin="5" DockPanel.Dock="Top">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <Label Content="Sequence Type:" Margin="5" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                    <ComboBox Grid.Column="1" HorizontalAlignment="Stretch" Margin="5" VerticalAlignment="Center"
+                          ItemsSource="{Binding SequenceTypes}" DisplayMemberPath="Name" 
+                          SelectedValuePath="Id" SelectedValue="{Binding SequenceTypeId, Mode=TwoWay}" />
+
+                    <Label Grid.Row="1" Content="Alignment:" Margin="5" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                    <ComboBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Stretch" Margin="5" VerticalAlignment="Center"
+                          ItemsSource="{Binding Alignments}" DisplayMemberPath="Name" 
+                          SelectedValuePath="Id" SelectedValue="{Binding AlignmentId, Mode=TwoWay}" />
+
+                    <Label Grid.Row="2" Content="Cell Location:" Margin="5" VerticalAlignment="Center" />
+                    <ComboBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Stretch" Margin="5" VerticalAlignment="Center"
+                          ItemsSource="{Binding CellLocationTypes}" DisplayMemberPath="Name" 
+                          SelectedValuePath="Id" SelectedValue="{Binding LocationId, Mode=TwoWay}" />
+                </Grid>
+            </GroupBox>
+
+            <GroupBox Header="Taxonomy Selection" Margin="5">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TreeView Margin="5" ItemsSource="{Binding TaxonomyRoot}"
+                              SelectedValuePath="Id" Grid.Row="0"
+                              ItemTemplate="{StaticResource TaxonomyData}">
+                        <julmar:EventCommander.Mappings>
+                            <julmar:CommandEvent Event="SelectedItemChanged" Command="{Binding SelectTaxonomyCommand}" />
+                        </julmar:EventCommander.Mappings>
+                        <TreeView.ItemContainerStyle>
+                            <Style TargetType="TreeViewItem" BasedOn="{StaticResource {x:Type TreeViewItem}}">
+                                <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                                <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                            </Style>
+                        </TreeView.ItemContainerStyle>
+                    </TreeView>
+
+                    <StackPanel Grid.Row="1" Orientation="Horizontal">
+                        <Label Content="Sequences found in taxonomy selection:" Margin="5" />
+                        <Label Content="{Binding MatchingSequenceCount, IsAsync=true, FallbackValue=(counting)}" Margin="5" FontWeight="Bold" Foreground="{Binding HasValidSequenceList, Converter={julmar:BooleanToBrushConverter TrueBrush=Yellow, FalseBrush=Red}}" />
+                    </StackPanel>
+
+                </Grid>
+            </GroupBox>
+
+        </DockPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="DatabaseSelection">
+        <DockPanel LastChildFill="False">
+            <Border Margin="5" DockPanel.Dock="Top">
+                <TextBlock Margin="5">
+                <Bold>Step 1:</Bold>
+                <Run>Enter the database connection information</Run>
+                </TextBlock>
+            </Border>
+
+            <GroupBox Header="Connection Name" Margin="5" DockPanel.Dock="Top">
+                <TextBox Margin="5" Text="{Binding Name, ValidatesOnDataErrors=true}" />
+            </GroupBox>
+
+            <GroupBox Header="Server" Margin="5" DockPanel.Dock="Top">
+                <TextBox Margin="5" Text="{Binding Server, ValidatesOnDataErrors=true}" />
+            </GroupBox>
+
+            <GroupBox Header="Database" Margin="5" DockPanel.Dock="Top">
+                <ComboBox Margin="5" ItemsSource="{Binding DatabaseNames, IsAsync=true}"
+                          SelectedItem="{Binding Database, ValidatesOnDataErrors=true}">
+                    <julmar:EventCommander.Mappings>
+                        <julmar:CommandEvent Event="DropDownOpened" Command="{Binding FillDatabaseCommand}" />
+                    </julmar:EventCommander.Mappings>
+                </ComboBox>
+            </GroupBox>
+
+            <GroupBox Header="Logon Details" Margin="5" DockPanel.Dock="Top">
+                <StackPanel>
+                    <RadioButton Margin="5" GroupName="SecurityType" IsChecked="{Binding IsWindowsSecurity}" Content="Windows Authentication" />
+                    <RadioButton Margin="5" GroupName="SecurityType" IsChecked="{Binding IsSqlServerSecurity}" Content="SQL Authentication" />
+                    <Grid Margin="20,0,0,0" Visibility="{Binding IsSqlServerSecurity, Converter={julmar:BooleanToVisibilityConverter TrueTreatment=Visible,FalseTreatment=Collapsed}}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <Label Margin="5,0,5,5" Content="Username:" HorizontalAlignment="Right" />
+                        <TextBox Grid.Column="1" Text="{Binding Username}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,0" />
+                        <Label Grid.Row="1" Margin="5" Content="Password:" HorizontalAlignment="Right" />
+                        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Password}" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="5,0" />
+                    </Grid>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Header="Connection String" Margin="5" DockPanel.Dock="Top">
+                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Margin="5" Foreground="White" MaxWidth="300"
+                       Text="{Binding ConnectionString, FallbackValue=(none)}" />
+            </GroupBox>
+
+            <CheckBox Margin="5" HorizontalAlignment="Right"  DockPanel.Dock="Top"
+                      Content="Remember this connection"
+                      IsChecked="{Binding ShouldSerialize}" />
+        </DockPanel>
+    </DataTemplate>
+
+</ResourceDictionary>

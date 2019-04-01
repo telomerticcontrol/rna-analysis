@@ -1,0 +1,138 @@
+﻿<!--/* 
+* Copyright (c) 2009, The University of Texas at Austin
+* All rights reserved.
+*
+* Redistribution and use in source and binary forms, with or without modification, 
+* are permitted provided that the following conditions are met:
+*
+* 1. Redistributions of source code must retain the above copyright notice, 
+* this list of conditions and the following disclaimer.
+*
+* 2. Redistributions in binary form must reproduce the above copyright notice, 
+* this list of conditions and the following disclaimer in the documentation and/or other materials 
+* provided with the distribution.
+*
+* Neither the name of The University of Texas at Austin nor the names of its contributors may be 
+* used to endorse or promote products derived from this software without specific prior written 
+* permission.
+* 
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR 
+* IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND 
+* FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS 
+* BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES 
+* (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 
+* PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
+* CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF 
+* THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/-->
+<ResourceDictionary x:Class="TaxonomyUpdaterDialog.Resources.DataTemplates"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:julmar="http://www.julmar.com/wpfhelpers">
+    
+    <DataTemplate x:Key="RCADInstanceSelection">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width=".45*"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            
+            <Border Grid.Column="1"
+                    BorderThickness="3"
+                    BorderBrush="LightGray">
+                <ScrollViewer>
+                    <DockPanel Margin="2" LastChildFill="False">
+                        <Border DockPanel.Dock="Top">
+                            <TextBlock Margin="5">
+                            <Bold>Step 1:</Bold>
+                            <Run>Select a rCAD Instance</Run>
+                            </TextBlock>
+                        </Border>
+
+                        <GroupBox DockPanel.Dock="Top"
+                          Header="rCAD Server">
+                            <StackPanel>
+                                <TextBlock TextWrapping="Wrap" Text="Requires SQL Server Standard Edition or higher and Integration Services to be installed on host."></TextBlock>
+                                
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="0.30*"></ColumnDefinition>
+                                        <ColumnDefinition></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Margin="0,5,0,0" Text="Host:"></TextBlock>
+                                    <!--<TextBox Grid.Column="1" Margin="5" Text="{Binding Path=Host}"></TextBox>-->
+                                    <TextBlock Grid.Column="1" Margin="5" Text="localhost"></TextBlock>
+                                </Grid>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="0.30*"></ColumnDefinition>
+                                        <ColumnDefinition></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock IsEnabled="{Binding Path=UpdatingDB, Converter={julmar:NotBooleanConverter}}" Margin="0,5,0,0" Text="Instance:"></TextBlock>
+                                    <TextBox Grid.Column="1" Margin="5" Text="{Binding Path=Instance}"></TextBox>
+                                </Grid>
+
+                                <Grid Visibility="{Binding Path=ConnectionValid, Converter={julmar:BooleanToVisibilityConverter TrueTreatment=Visible, FalseTreatment=Collapsed}}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="0.30*"></ColumnDefinition>
+                                        <ColumnDefinition></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Margin="0,5,0,0" Text="rCAD DB:"></TextBlock>
+                                    <ComboBox IsEnabled="{Binding Path=UpdatingDB, Converter={julmar:NotBooleanConverter}}" Margin="5,5,200,5" Grid.Column="1" ItemsSource="{Binding Path=InstanceDatabases}" SelectedValue="{Binding Path=Database, Mode=TwoWay}"></ComboBox>
+                                </Grid>
+                            </StackPanel>
+                        </GroupBox>
+
+                        <GroupBox DockPanel.Dock="Top"
+                              Header="Connection String">
+                            <TextBlock Margin="0,5,0,0" Text="{Binding Path=ConnectionString}" TextWrapping="Wrap"></TextBlock>
+                        </GroupBox>
+
+                        <GroupBox DockPanel.Dock="Top"
+                              Header="Connection Test">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="0.20*"></ColumnDefinition>
+                                    <ColumnDefinition></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Button Margin="2,8,2,8" Padding="6,2,6,2" Command="{Binding Path=TestDBConnectionCommand}" Content="Test"></Button>
+                                <TextBlock Margin="2,12,2,8" Grid.Column="1" Visibility="{Binding Path=ConnectionValid, Converter={julmar:BooleanToVisibilityConverter TrueTreatment=Visible, FalseTreatment=Hidden}}"
+                                       Text="Configured connection is valid."></TextBlock>
+                                <TextBlock Margin="2,12,2,8" Grid.Column="1" Visibility="{Binding Path=ConnectionValid, Converter={julmar:BooleanToVisibilityConverter TrueTreatment=Hidden, FalseTreatment=Visible}}"
+                                       Text="Configured connection is not valid."></TextBlock>
+                            </Grid>
+                        </GroupBox>
+                        
+                        <StackPanel DockPanel.Dock="Top">
+                            <DockPanel LastChildFill="False" Margin="0,10,0,0" 
+                                       Visibility="{Binding Path=ConnectionValid, Converter={julmar:BooleanToVisibilityConverter TrueTreatment=Visible, FalseTreatment=Collapsed}}">
+                                <Line DockPanel.Dock="Top" X1="0" X2="1" Stretch="Fill" Stroke="Black" StrokeThickness="1" Margin="0,2,0,8"></Line>
+                                <Button DockPanel.Dock="Left" Content="Update Taxonomy" Padding="6,2,6,2" Command="{Binding Path=UpdateTaxonomyCommand}"></Button>
+                                <TextBlock DockPanel.Dock="Left" FontWeight="Bold" Margin="5,3,0,0" Text="Status: "></TextBlock>
+                                <TextBlock DockPanel.Dock="Left" Margin="5,3,0,0" Text="{Binding Path=StatusMessage}"></TextBlock>
+                            </DockPanel>
+                        </StackPanel>
+                    </DockPanel>
+                </ScrollViewer>
+            </Border>
+
+            <Border BorderThickness="3"
+                    BorderBrush="LightGray">
+                <StackPanel Margin="5">
+                    <DockPanel LastChildFill="False"
+                               Margin="5">
+                        <BulletDecorator DockPanel.Dock="Top">
+                            <BulletDecorator.Bullet>
+                                <Ellipse Margin="0,5,0,0" Fill="Black" Stroke="Black" StrokeThickness="1" Width="5" Height="5"></Ellipse>
+                            </BulletDecorator.Bullet>
+                            <TextBlock Margin="5,5,0,0" FontWeight="Bold"  FontSize="14" Text="Step 1"></TextBlock>
+                        </BulletDecorator>
+                        <TextBlock Margin="0,5,0,0" Text="Select rCAD Instance" DockPanel.Dock="Top" />
+                    </DockPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </DataTemplate>
+      
+</ResourceDictionary>

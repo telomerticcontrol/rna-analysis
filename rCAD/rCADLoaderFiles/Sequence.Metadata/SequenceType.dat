@@ -1,0 +1,51 @@
+1	|	RNA	|	Ribosomal	|	16S
+2	|	RNA	|	Ribosomal	|	23S
+3	|	RNA	|	Ribosomal	|	5S
+4	|	RNA	|	Ribosomal	|	Sp1
+5	|	RNA	|	Ribosomal	|	Sp2
+6	|	RNA	|	Ribosomal	|	Unknown
+7	|	RNA	|	Transfer	|	trnC
+8	|	RNA	|	Transfer	|	trnA
+9	|	RNA	|	Transfer	|	trnR
+10	|	RNA	|	Transfer	|	trnN
+11	|	RNA	|	Transfer	|	trnD
+12	|	RNA	|	Transfer	|	trnQ
+13	|	RNA	|	Transfer	|	trnE
+14	|	RNA	|	Transfer	|	trnG
+15	|	RNA	|	Transfer	|	trnH
+16	|	RNA	|	Transfer	|	trnI
+17	|	RNA	|	Transfer	|	trnK
+18	|	RNA	|	Transfer	|	trnM
+19	|	RNA	|	Transfer	|	trnF
+20	|	RNA	|	Transfer	|	trnP
+21	|	RNA	|	Transfer	|	trnT
+22	|	RNA	|	Transfer	|	trnW
+23	|	RNA	|	Transfer	|	trnY
+24	|	RNA	|	Transfer	|	trnV
+25	|	RNA	|	Transfer	|	trnL
+26	|	RNA	|	Transfer	|	trnS
+27	|	RNA	|	Transfer	|	Unknown
+28	|	RNA	|	Intron	|	IB
+29	|	RNA	|	Intron	|	IA3
+30	|	RNA	|	Intron	|	IC1
+31	|	RNA	|	Intron	|	IIB
+32	|	RNA	|	Intron	|	Unknown
+33	|	RNA	|	Intron	|	IC3
+34	|	RNA	|	Intron	|	IC2
+35	|	RNA	|	Intron	|	ID
+36	|	RNA	|	Intron	|	IB4
+37	|	RNA	|	Intron	|	IB2
+38	|	RNA	|	Intron	|	IA1
+39	|	RNA	|	Intron	|	IIA
+40	|	RNA	|	Intron	|	IA2
+41	|	RNA	|	Intron	|	IE
+42	|	RNA	|	Intron	|	I
+43	|	RNA	|	Intron	|	IB1
+44	|	RNA	|	Intron	|	IB3
+45	|	RNA	|	Intron	|	IC
+46	|	RNA	|	Other RNA - tmRNA	|	TM
+47	|	RNA	|	Other RNA - trRNA	|	TR
+48	|	RNA	|	Other RNA - hpcRNA	|	HPC
+49	|	RNA	|	Other RNA - rpRNA	|	RP
+50	|	RNA	|	SRP RNA	|	SRP
+100	|	Unknown	|	Unknown	|	Unknown

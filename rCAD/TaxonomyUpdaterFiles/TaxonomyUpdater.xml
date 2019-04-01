@@ -1,0 +1,98 @@
+<TaxonomyUpdater>
+<CreateTempTables>
+	<TableFile>CreateTablesFiles\CreateNCBITempNodes.sql</TableFile>
+	<TableFile>CreateTablesFiles\CreateNCBITempNames.sql</TableFile>
+  	<TableFile>CreateTablesFiles\CreateNCBIMergedNodes.sql</TableFile>
+  	<TableFile>CreateTablesFiles\CreateNCBIDeletedNodes.sql</TableFile>
+  	<TableFile>CreateTablesFiles\CreateRNAJOINTempTaxonomyMappedSequences.sql</TableFile>
+</CreateTempTables>
+<CreateMergeTables>
+	<TableFile>CreateTablesFiles\CreateRNAJOINTaxonomyOuterNodes.sql</TableFile>
+	<TableFile>CreateTablesFiles\CreateRNAJOINTaxonomyMerged.sql</TableFile>
+	<TableFile>CreateTablesFiles\CreateRNAJOINOrphanedSequences.sql</TableFile>
+	<TableFile>CreateTablesFiles\CreateRNAJOINMergedSequences.sql</TableFile>
+	<TableFile>CreateTablesFiles\CreateRNAJOINMovedSequences.sql</TableFile>
+	<TableFile>CreateTablesFiles\CreateRNAJOINMovedNodes.sql</TableFile>
+	<TableFile>CreateTablesFiles\CreateRNAJOINDeletedNodes.sql</TableFile>
+	<TableFile>CreateTablesFiles\CreateRNAJOINMergedNodes.sql</TableFile>
+	<TableFile>CreateTablesFiles\CreateRNAJOINOurNodesForTaxonomyMerged.sql</TableFile>
+	<TableFile>CreateTablesFiles\CreateRNAJOINDeletedParentsToOurNodes.sql</TableFile>
+	<TableFile>CreateTablesFiles\CreateRNAJOINMergedParentsToOurNodes.sql</TableFile>
+	<TableFile>CreateTablesFiles\CreateRNAJOINAlternateNames.sql</TableFile>
+	<TableFile>CreateTablesFiles\CreateRNAJOINTaxonomyNames.sql</TableFile>
+	<TableFile>CreateTablesFiles\CreateRNAJOINNameClasses.sql</TableFile>
+	<TableFile>CreateTablesFiles\CreateRNAJOINAlternateNamesArchived.sql</TableFile>
+	<TableFile>CreateTablesFiles\CreateRNAJOINNameClassesArchived.sql</TableFile>
+	<TableFile>CreateTablesFiles\CreateRNAJOINTaxonomyArchived.sql</TableFile>
+	<TableFile>CreateTablesFiles\CreateRNAJOINTaxonomyNamesArchived.sql</TableFile>
+</CreateMergeTables>
+<DropTempTables>
+	<TableFile>DropTablesFiles\DropNCBITempNodes.sql</TableFile>
+  	<TableFile>DropTablesFiles\DropNCBITempNames.sql</TableFile>
+  	<TableFile>DropTablesFiles\DropNCBIMergedNodes.sql</TableFile>
+  	<TableFile>DropTablesFiles\DropNCBIDeletedNodes.sql</TableFile>
+  	<TableFile>DropTablesFiles\DropRNAJOINTempTaxonomyMappedSequences.sql</TableFile>
+</DropTempTables>
+<DropMergeTables>
+	<TableFile>DropTablesFiles\DropRNAJOINTaxonomyOuterNodes.sql</TableFile>
+	<TableFile>DropTablesFiles\DropRNAJOINTaxonomyMerged.sql</TableFile>
+	<TableFile>DropTablesFiles\DropRNAJOINOrphanedSequences.sql</TableFile>
+	<TableFile>DropTablesFiles\DropRNAJOINMergedSequences.sql</TableFile>
+	<TableFile>DropTablesFiles\DropRNAJOINMovedSequences.sql</TableFile>
+	<TableFile>DropTablesFiles\DropRNAJOINMovedNodes.sql</TableFile>
+	<TableFile>DropTablesFiles\DropRNAJOINDeletedNodes.sql</TableFile>
+	<TableFile>DropTablesFiles\DropRNAJOINMergedNodes.sql</TableFile>
+	<TableFile>DropTablesFiles\DropRNAJOINOurNodesForTaxonomyMerged.sql</TableFile>
+	<TableFile>DropTablesFiles\DropRNAJOINDeletedParentsToOurNodes.sql</TableFile>
+	<TableFile>DropTablesFiles\DropRNAJOINMergedParentsToOurNodes.sql</TableFile>
+	<TableFile>DropTablesFiles\DropRNAJOINAlternateNames.sql</TableFile>
+	<TableFile>DropTablesFiles\DropRNAJOINTaxonomyNames.sql</TableFile>
+	<TableFile>DropTablesFiles\DropRNAJOINNameClasses.sql</TableFile>
+	<TableFile>DropTablesFiles\DropRNAJOINAlternateNamesArchived.sql</TableFile>
+	<TableFile>DropTablesFiles\DropRNAJOINNameClassesArchived.sql</TableFile>
+	<TableFile>DropTablesFiles\DropRNAJOINTaxonomyArchived.sql</TableFile>
+	<TableFile>DropTablesFiles\DropRNAJOINTaxonomyNamesArchived.sql</TableFile>
+</DropMergeTables>
+<PopulateRNAJOINTaxonomyOuterNodes>
+	<QueryFile>BatchOperations\PopulateRNAJOINTaxonomyOuterNodes.sql</QueryFile>
+</PopulateRNAJOINTaxonomyOuterNodes>
+<PopulateRNAJOINTaxonomyMerged>
+	<QueryFile>BatchOperations\PopulateRNAJOINTaxonomyMerged.sql</QueryFile>
+</PopulateRNAJOINTaxonomyMerged>
+<HandleMovedNodes>
+	<QueryFile>BatchOperations\HandleMovedNodes.sql</QueryFile>
+</HandleMovedNodes>
+<HandleDeletedNodes>
+	<QueryFile>BatchOperations\HandleDeletedNodes.sql</QueryFile>
+</HandleDeletedNodes>
+<HandleMergedNodes>
+	<QueryFile>BatchOperations\HandleMergedNodes.sql</QueryFile>
+</HandleMergedNodes>
+<HandleMovedOurNodes>
+	<QueryFile>BatchOperations\HandleMovedOurNodes.sql</QueryFile>
+</HandleMovedOurNodes>
+<IdentifyDeletedOurNodes>
+	<QueryFile>BatchOperations\IdentifyDeletedOurNodes.sql</QueryFile>
+</IdentifyDeletedOurNodes>
+<IdentifyMergedOurNodes>
+	<QueryFile>BatchOperations\IdentifyMergedOurNodes.sql</QueryFile>
+</IdentifyMergedOurNodes>
+<InsertOurNodesInRNAJOINTaxonomyMerged>
+	<QueryFile>BatchOperations\InsertOurNodesInRNAJOINTaxonomyMerged.sql</QueryFile>
+</InsertOurNodesInRNAJOINTaxonomyMerged>
+<HandleNameClasses>
+	<QueryFile>BatchOperations\HandleNameClasses.sql</QueryFile>
+</HandleNameClasses>
+<PropagateJoin>
+	<QueryFile>BatchOperations\TransactionallyPropagateJoin.sql</QueryFile>
+</PropagateJoin>
+<PopulateTaxonomyNamesOrdered>
+	<QueryFile>BatchOperations\PopulateTaxonomyNamesOrdered.sql</QueryFile>
+</PopulateTaxonomyNamesOrdered>
+<InitializeTaxonomyMappingTable>
+	<QueryFile>BatchOperations\InitializeRNAJOINTempTaxonomyMappedSequences.sql</QueryFile>
+</InitializeTaxonomyMappingTable>
+<UpdateSequenceMainWithTaxonomyMappings>
+	<QueryFile>BatchOperations\TransactionallyPropagateRNAJOINTaxonomyMapping.sql</QueryFile>
+</UpdateSequenceMainWithTaxonomyMappings>
+</TaxonomyUpdater>

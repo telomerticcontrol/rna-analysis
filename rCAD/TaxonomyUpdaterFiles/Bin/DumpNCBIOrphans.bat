@@ -1,0 +1,1 @@
+bcp %1.dbo.RNAJOINTaxonomyOuterNodes out %2.NCBIOrphans.dmp -T -c -S localhost

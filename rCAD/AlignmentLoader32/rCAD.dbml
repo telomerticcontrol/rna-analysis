@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Database Name="rCAD" Class="rCADDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=.;Initial Catalog=rCAD;Integrated Security=True" SettingsObjectName="AlignmentLoader.Properties.Settings" SettingsPropertyName="rCADConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.CellLocationInfo" Member="CellLocationInfos">
+    <Type Name="CellLocationInfo">
+      <Column Name="LocationID" Type="System.Byte" DbType="TinyInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.NextAlnID" Member="NextAlnIDs">
+    <Type Name="NextAlnID">
+      <Column Name="AlnID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.NextSeqID" Member="NextSeqIDs">
+    <Type Name="NextSeqID">
+      <Column Name="SeqID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SecondaryStructureExtentTypes" Member="SecondaryStructureExtentTypes">
+    <Type Name="SecondaryStructureExtentType">
+      <Column Name="ExtentTypeID" Type="System.Byte" DbType="TinyInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ExtentType" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SequenceAccession" Member="SequenceAccessions">
+    <Type Name="SequenceAccession">
+      <Column Name="SeqID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="AccessionID" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="AccessionVersion" Type="System.Int16" DbType="SmallInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SequenceMain" Member="SequenceMains">
+    <Type Name="SequenceMain">
+      <Column Name="SeqID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TaxID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LocationID" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="SeqTypeID" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="SeqLength" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Source" Type="System.String" DbType="VarChar(8000)" CanBeNull="true" />
+      <Column Name="Comment" Type="System.String" DbType="VarChar(8000)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SequenceType" Member="SequenceTypes">
+    <Type Name="SequenceType">
+      <Column Name="SeqTypeID" Type="System.Byte" DbType="TinyInt NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="MoleculeType" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="GeneType" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="GeneName" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TaxonomyNames" Member="TaxonomyNames">
+    <Type Name="TaxonomyName">
+      <Column Name="TaxID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ScientificName" Type="System.String" DbType="VarChar(8000) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+</Database>

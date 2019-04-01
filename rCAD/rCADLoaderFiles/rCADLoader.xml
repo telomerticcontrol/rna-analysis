@@ -1,0 +1,38 @@
+<rCADLoader>
+<CreateTablesFiles>
+	<TableFile>CreateTablesFiles\CreateSequenceMain.sql</TableFile>
+	<TableFile>CreateTablesFiles\CreateSequenceType.sql</TableFile>
+	<TableFile>CreateTablesFiles\CreateSequenceAccession.sql</TableFile>
+	<TableFile>CreateTablesFiles\CreateCellLocationInfo.sql</TableFile>
+	<TableFile>CreateTablesFiles\CreateNextSeqID.sql</TableFile>
+	<TableFile>CreateTablesFiles\CreateAlignment.sql</TableFile>
+	<TableFile>CreateTablesFiles\CreateAlignmentColumn.sql</TableFile>
+	<TableFile>CreateTablesFiles\CreateAlignmentData.sql</TableFile>
+	<TableFile>CreateTablesFiles\CreateAlignmentSequence.sql</TableFile>
+	<TableFile>CreateTablesFiles\CreateNextAlnID.sql</TableFile>
+	<TableFile>CreateTablesFiles\CreateTaxonomy.sql</TableFile>
+	<TableFile>CreateTablesFiles\CreateTaxonomyNames.sql</TableFile>
+	<TableFile>CreateTablesFiles\CreateTaxonomyNamesOrdered.sql</TableFile>
+	<TableFile>CreateTablesFiles\CreateAlternateNames.sql</TableFile>
+	<TableFile>CreateTablesFiles\CreateNameClasses.sql</TableFile>
+	<TableFile>CreateTablesFiles\CreateSecondaryStructureBasePairs.sql</TableFile>
+	<TableFile>CreateTablesFiles\CreateSecondaryStructureExtents.sql</TableFile>
+	<TableFile>CreateTablesFiles\CreateSecondaryStructureExtentTypes.sql</TableFile>
+</CreateTablesFiles>
+<CreateIndicesFiles>
+	<IndexFile>CreateIndicesFiles\CreateNCIndexAlignmentData_AlnID_SeqID_PhysicalColumnNumber.sql</IndexFile>
+	<IndexFile>CreateIndicesFiles\CreateNCIndexSequenceMain_TaxID_SeqTypeID_LocationID.sql</IndexFile>
+	<IndexFile>CreateIndicesFiles\CreateNCIndexTaxonomy_ParentTaxID.sql</IndexFile>
+</CreateIndicesFiles>
+<CreateViewsFiles>
+	<ViewFile>CreateViewsFiles\CreateViewAlignmentGrid.sql</ViewFile>
+	<ViewFile>CreateViewsFiles\CreateViewAlignmentGridUngapped.sql</ViewFile>
+</CreateViewsFiles>
+<CreateUDFFiles>
+	<UDFFile>CreateUDFFiles\CreateSelectAllSequencesForTaxonomyByScientificNameUDF.sql</UDFFile>
+	<UDFFile>CreateUDFFiles\CreateSelectAllSequencesForTaxonomyByTaxIDUDF.sql</UDFFile>
+</CreateUDFFiles>
+<PopulateTaxonomyNamesOrdered>
+	<QueryFile>BatchOperations\PopulateTaxonomyNamesOrdered.sql</QueryFile>
+</PopulateTaxonomyNamesOrdered>
+</rCADLoader>
